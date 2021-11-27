@@ -56,10 +56,10 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.4'
 
-    //implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    //implementation 'com.squareup.retrofit2:retrofit:2.0'
-    //implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     //implementation "io.reactivex.rxjava3:rxkotlin:3.x.y"
-    //implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    //implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
 }
