@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import com.example.app_sudamericana.EditarPerfilActivity
 import com.example.app_sudamericana.PruebaActivity
 import com.example.app_sudamericana.R
 
@@ -22,7 +24,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class PerfilFragment : Fragment() {
     // TODO: Rename and change types of parameters
-
+   var  linearLayaoutEditPerfil: LinearLayout? = null
 
     private var param1: String? = null
     private var param2: String? = null
@@ -46,6 +48,17 @@ class PerfilFragment : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        linearLayaoutEditPerfil = view.findViewById(R.id.linearLayaoutEditPerfil)
+        linearLayaoutEditPerfil?.setOnClickListener {
+            context?.let { safeContext ->
+                val intent = Intent(safeContext, EditarPerfilActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+    }
     companion object {
 
         @JvmStatic

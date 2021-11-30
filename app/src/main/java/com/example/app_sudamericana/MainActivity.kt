@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         val Textregistrar = findViewById<TextView>(R.id.TxtRegistrate)
         Textregistrar.setOnClickListener {
-            val lanzar = Intent( this, RegistroActivity::class.java)
+            val lanzar = Intent ( this, RegistroActivity::class.java)
             startActivity(lanzar)}
     }
 }
