@@ -51,8 +51,7 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="480dp"
-                android:layout_marginTop="0dp"
+                android:layout_height="450dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -254,10 +253,9 @@
 
             </androidx.core.widget.NestedScrollView>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <Button
@@ -266,7 +264,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/buttonlogin"
                     android:text="ACTUALIZAR"

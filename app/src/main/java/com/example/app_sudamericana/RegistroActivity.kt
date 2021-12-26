@@ -1,13 +1,16 @@
 package com.example.app_sudamericana
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.Response.UserRegisterResponse
 import com.example.app_sudamericana.API.Domain.UserRegister
 import com.example.app_sudamericana.API.Service.AuthService
+import com.example.app_sudamericana.databinding.ActivityRegistroBinding
 import com.google.android.material.textfield.TextInputEditText
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
@@ -16,9 +19,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_registro.*
 
 class RegistroActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegistroBinding
 
-    var authservice: AuthService = AuthService()
-
+      var authservice: AuthService = AuthService()
 
     private lateinit var address: TextInputEditText
     private lateinit var email: TextInputEditText
@@ -29,9 +32,24 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var username: TextInputEditText
     private lateinit var btnRegisterUser: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        NombreFocusListener()
+        ApellidoFocusListener()
+        DireccionFocusListener()
+        CorreoFocusListener()
+        TelefonoFocusListener()
+        UsuarioFocusListener()
+        PasswordFocusListener()
+
+        binding.BtnRegisterUser.setOnClickListener { submitFormulario() }
 
         address = findViewById(R.id.TxtDireccion)
         email = findViewById(R.id.TxtCorreo)
@@ -43,38 +61,191 @@ class RegistroActivity : AppCompatActivity() {
         btnRegisterUser = findViewById(R.id.BtnRegisterUser)
 
 
-       btnRegisterUser.setOnClickListener ({createUser()})
-/*//
-//        authservice.login(Authenticate("123456", "maximopeoficiales"))
-//            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(object : Observer<AuthenticateResponse> {
-//                @Override
-//                override fun onSubscribe(d: Disposable) {
-//                    //disposables.add(d)
-//                }
-//
-//                @Override
-//                override fun onNext(news: AuthenticateResponse) {
-//                    Toast.makeText(this@RegistroActivity, news.jwt, Toast.LENGTH_SHORT).show()
-//                }
-//
-//                @Override
-//                override fun onError(e: Throwable) {
-//                    Toast.makeText(this@RegistroActivity, e.message, Toast.LENGTH_SHORT).show()
-//                }
-//
-//                @Override
-//                override fun onComplete() {
-//                }
-//            })*/
-
-
 
     }
 
+
+   //Validar formulario click boton registrar
+    private fun submitFormulario() {
+       val validarNombre = binding.nombreContainer.helperText == null
+       val validarApellido = binding.apellidoContainer.helperText == null
+       val validarDireccion = binding.direccionContainer.helperText == null
+       val validarCorreo = binding.emailContainer.helperText == null
+       val validarTelefono = binding.telefonoContainer.helperText == null
+       val validarUsuario = binding.usuarioContainer.helperText == null
+       val validarContreña = binding.paswwordContainer.helperText == null
+
+       binding.nombreContainer.helperText = validarNombre()
+       binding.apellidoContainer.helperText = validarApellido()
+       binding.direccionContainer.helperText = validarDireccion()
+       binding.emailContainer.helperText = validarCorreo()
+       binding.telefonoContainer.helperText = validarTelefono()
+       binding.usuarioContainer.helperText = validarUsuario()
+       binding.paswwordContainer.helperText = validarContreña()
+       btnRegisterUser.setOnClickListener ({createUser()})
+      // startActivity(Intent(this, MainActivity::class.java))
+
+    }
+
+
+
+    //validar Nombre
+    private fun NombreFocusListener() {
+        binding.TxtNombre.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.nombreContainer.helperText = validarNombre()
+            }
+        }
+    }
+    private fun validarNombre(): String? {
+        val nombreText = binding.TxtNombre.text.toString()
+        if(nombreText.length<7)
+        {
+            return "Escribe tu nombre completo"
+        }
+        return null
+    }
+
+
+    //validar Apellido
+    private fun ApellidoFocusListener() {
+        binding.TxtApellido.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.apellidoContainer.helperText = validarApellido()
+            }
+        }
+    }
+    private fun validarApellido(): String? {
+        val apellidoText = binding.TxtApellido.text.toString()
+        if(apellidoText.length<10)
+        {
+            return "Escribe tu Apellido completo"
+        }
+        return null
+    }
+
+
+    //validar Direccion
+    private fun DireccionFocusListener() {
+        binding.TxtDireccion.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.direccionContainer.helperText = validarDireccion()
+            }
+        }
+    }
+    private fun validarDireccion(): String? {
+        val direccionText = binding.TxtDireccion.text.toString()
+        if(direccionText.length<5)
+        {
+            return "Escribe tu Dirección"
+        }
+        return null
+    }
+
+//validar correo
+    private fun CorreoFocusListener() {
+        binding.TxtCorreo.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.emailContainer.helperText = validarCorreo()
+            }
+        }
+    }
+    private fun validarCorreo(): CharSequence? {
+        val emailText = binding.TxtCorreo.text.toString()
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches())
+        {
+            return "Dirección de correo electrónico inválida"
+        }
+                      return null
+    }
+
+
+    //validar Telefono
+    private fun TelefonoFocusListener() {
+        binding.TxtTelefono.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.telefonoContainer.helperText = validarTelefono()
+            }
+        }
+    }
+    private fun validarTelefono(): String? {
+        val TelefonoText = binding.TxtTelefono.text.toString()
+        if(!TelefonoText.matches(".*[0-9].*".toRegex()))
+        {
+            return "Debe tener 9 dígitos"
+        }
+        if(TelefonoText.length != 9)
+        {
+            return "Debe tener 9 dígitos"
+        }
+        return null
+    }
+
+
+    //validar Usuario
+    private fun UsuarioFocusListener() {
+        binding.TxtUsuario.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.usuarioContainer.helperText = validarUsuario()
+            }
+        }
+    }
+    private fun validarUsuario(): String? {
+        val usuariotext = binding.TxtUsuario.text.toString()
+        if(usuariotext.length<3)
+        {
+            return "Escribe tu Usuario"
+        }
+        return null
+    }
+
+
+    //validar contraseña
+    private fun PasswordFocusListener() {
+        binding.TxtPassword.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.paswwordContainer.helperText = validarContreña()
+            }
+        }
+    }
+    private fun validarContreña(): String? {
+        val passwordText = binding.TxtPassword.text.toString()
+        if(passwordText.length<8)
+        {
+            return "Contraseña mínima de 8 caracteres"
+        }
+        if(!passwordText.matches(".*[A-Z].*".toRegex()))
+        {
+            return "Debe contener 1 carácter en mayúscula"
+        }
+        if(!passwordText.matches(".*[a-z].*".toRegex()))
+        {
+            return "\n" +
+                    "Debe contener 1 carácter en minúscula"
+        }
+        if(!passwordText.matches(".*[@#\$%^&+=].*".toRegex()))
+        {
+            return "Debe contener 1 carácter especial especial (@#\$%^&+=)"
+        }
+        return null
+    }
+
+
+
+
+
+
+
+
+   // Crear un usuario API
     private fun createUser(){
-
-
         authservice.registerUser(UserRegister(address.text.toString(), email.text.toString(), firstName.text.toString(),1,lastName.text.toString()
             ,password.text.toString(),phone.text.toString(), username.text.toString()))
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -82,6 +253,12 @@ class RegistroActivity : AppCompatActivity() {
                 @Override
                 override fun onSubscribe(d: Disposable) {
                     //disposables.add(d)
+                    Toast.makeText(
+                        this@RegistroActivity,
+                        "Usuario Registrado correctamente",
+                        Toast.LENGTH_LONG
+                    ).show()
+
                 }
 
                 @Override
@@ -91,14 +268,18 @@ class RegistroActivity : AppCompatActivity() {
 
                 @Override
                 override fun onError(e: Throwable) {
-                    Toast.makeText(this@RegistroActivity, e.message, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@RegistroActivity, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@RegistroActivity,
+                        "No se pudo registrar el usuario",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
                 @Override
                 override fun onComplete() {
                 }
             })
-
     }
 
 }

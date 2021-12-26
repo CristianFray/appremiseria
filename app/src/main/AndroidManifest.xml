@@ -15,21 +15,27 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".PruebaActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".EditarPerfilActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".RegistroActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".HomeActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".PrincipalActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

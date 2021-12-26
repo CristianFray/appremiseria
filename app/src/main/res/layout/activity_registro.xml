@@ -51,7 +51,7 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="480dp"
+                android:layout_height="448dp"
                 android:layout_marginTop="0dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -67,7 +67,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-
+                            android:id="@+id/nombreContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -84,9 +84,10 @@
                             app:boxCornerRadiusTopEnd="10dp"
                             app:boxCornerRadiusTopStart="10dp"
                             app:counterEnabled="true"
-                            app:counterMaxLength="20"
+                            app:counterMaxLength="15"
                             app:endIconMode="clear_text"
-                            app:helperText="Ingresa tu nombre"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
                             app:helperTextEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -108,6 +109,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/apellidoContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -123,9 +125,10 @@
                             app:boxCornerRadiusTopEnd="10dp"
                             app:boxCornerRadiusTopStart="10dp"
                             app:counterEnabled="true"
-                            app:counterMaxLength="20"
+                            app:counterMaxLength="15"
                             app:endIconMode="clear_text"
-                            app:helperText="Ingresa tu Apellido"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
                             app:helperTextEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +151,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-
+                            android:id="@+id/direccionContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -166,7 +169,8 @@
                             app:counterEnabled="true"
                             app:counterMaxLength="20"
                             app:endIconMode="clear_text"
-                            app:helperText="Ingresa tu Dirección"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
                             app:helperTextEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -186,7 +190,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-
+                            android:id="@+id/emailContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -201,11 +205,10 @@
                             app:boxCornerRadiusBottomStart="10dp"
                             app:boxCornerRadiusTopEnd="10dp"
                             app:boxCornerRadiusTopStart="10dp"
-                            app:counterEnabled="true"
-                            app:counterMaxLength="20"
+                            app:counterMaxLength="15"
                             app:endIconMode="clear_text"
-                            app:helperText="Ingresa tu Correo"
-                            app:helperTextEnabled="false"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -214,7 +217,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/TxtCorreo"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress"/>
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
@@ -224,7 +228,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-
+                            android:id="@+id/telefonoContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -243,7 +247,9 @@
                             app:counterEnabled="true"
                             app:counterMaxLength="9"
                             app:endIconMode="clear_text"
-                            app:helperText="Ingresa tu Teléfono"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
+
                             app:helperTextEnabled="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -253,7 +259,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/TxtTelefono"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:inputType="number"/>
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
@@ -263,7 +270,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-
+                            android:id="@+id/usuarioContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -281,7 +288,8 @@
                             app:counterEnabled="true"
                             app:counterMaxLength="20"
                             app:endIconMode="clear_text"
-                            app:helperText="Ingresa tu Usuario"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
                             app:helperTextEnabled="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -301,7 +309,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-
+                            android:id="@+id/paswwordContainer"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -319,8 +327,8 @@
                             app:counterEnabled="true"
                             app:counterMaxLength="20"
                             app:endIconMode="password_toggle"
-                            app:helperText="Ingresa tu Password"
-                            app:helperTextEnabled="false"
+                            app:helperText="@string/Requerido"
+                            app:helperTextTextColor="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -329,7 +337,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/TxtPassword"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"/>
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 

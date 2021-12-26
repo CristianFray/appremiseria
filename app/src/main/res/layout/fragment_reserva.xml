@@ -118,7 +118,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/BtnSelectFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -129,15 +129,15 @@
                 android:text="Seleccione fecha"
                 android:textColor="#ffffff" />
 
-            <TextView
-                android:id="@+id/BtnsFecha"
+            <EditText
+                android:id="@+id/TxtFecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:gravity="center"
-                android:text="19:23"
+                android:text="30/11/2021"
                 android:textColor="@color/black"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -149,7 +149,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/butto3n"
+                android:id="@+id/BtnSelectHora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -160,15 +160,15 @@
                 android:text="Seleccione Hora"
                 android:textColor="#ffffff" />
 
-            <TextView
-                android:id="@+id/BtnFecha"
+            <EditText
+                android:id="@+id/TxtHora"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:gravity="center"
-                android:text="30/11/2021"
+                android:text="18:02 AM"
                 android:textColor="@color/black"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -202,7 +202,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="580dp">
+        android:layout_marginTop="551dp">
 
         <Button
             android:id="@+id/Btnregistrarse"
