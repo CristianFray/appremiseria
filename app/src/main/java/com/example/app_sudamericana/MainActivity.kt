@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -14,6 +15,7 @@ import com.example.app_sudamericana.API.Service.AuthService
 import com.example.app_sudamericana.databinding.ActivityMainBinding
 import com.example.app_sudamericana.fragments.HomeFragment
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
      //   btnlogin.setOnClickListener ({createlogin()})
 
-      // binding.Btnlogin.setOnClickListener { submitLogin() }
+      //binding.Btnlogin.setOnClickListener { submitLogin() }
 //==================================================================================================
     }
     private fun rememberUser(sp : SharedPreferences){
@@ -132,6 +134,7 @@ class MainActivity : AppCompatActivity() {
         binding.usuarioContainer.helperText = validarUsuario()
         binding.passwordContainer.helperText = validarContraseña()
 
+
     }
 
     //validar Usuario
@@ -185,13 +188,12 @@ class MainActivity : AppCompatActivity() {
                 @Override
                 override fun onNext(data: AuthenticateResponse) {
                     Toast.makeText(this@MainActivity, data.jwt, Toast.LENGTH_SHORT).show()
-                    if(data.jwt!=null){
 
-                    }
                 }
 
                 @Override
                 override fun onError(e: Throwable) {
+
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
 

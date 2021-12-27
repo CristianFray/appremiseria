@@ -2,6 +2,8 @@ package com.example.app_sudamericana.API
 
 import android.net.Uri
 import com.example.app_sudamericana.enviroments.Credentials
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -38,6 +40,9 @@ class RetrofitInstance  private constructor() {
 
     init {
         api = Retrofit.Builder()
+            .client(OkHttpClient.Builder()
+                .addInterceptor(OkHttpProfilerInterceptor())
+                .build())
             .baseUrl(Credentials.URL_API)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

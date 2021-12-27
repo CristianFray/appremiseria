@@ -4,6 +4,7 @@ package com.example.app_sudamericana
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.example.app_sudamericana.API.Domain.UserRegister
 import com.example.app_sudamericana.API.Service.AuthService
 import com.example.app_sudamericana.databinding.ActivityRegistroBinding
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
@@ -258,6 +260,9 @@ class RegistroActivity : AppCompatActivity() {
                         "Usuario Registrado correctamente",
                         Toast.LENGTH_LONG
                     ).show()
+
+                    //Log.wtf("login", "data ---> ${Gson().toJson(d)}")
+                    //onBackPressed()
 
                 }
 

@@ -10,6 +10,8 @@ class PrincipalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
 
+
+
         val botonlogin = findViewById<Button>(R.id.Btnregistrarse)
         botonlogin.setOnClickListener {
             val lanzar = Intent( this, RegistroActivity::class.java)
@@ -18,6 +20,8 @@ class PrincipalActivity : AppCompatActivity() {
         val botonregistrar = findViewById<Button>(R.id.Btnlogin)
         botonregistrar.setOnClickListener { val Abrir = Intent (this, MainActivity::class.java)
             startActivity(Abrir)}
+
+
 
 
     }
