@@ -23,10 +23,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         RepetirFragment(homeFragment)
 
+
+        //Boton de navegaciones interface
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.navigation_home -> RepetirFragment(homeFragment)
@@ -36,11 +36,15 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-
+        //SharedPreferences cerrar sesión BOTON
         binding.Btncerrarseccion.setOnClickListener { logOut() }
+
 
     }
 
+
+
+    //SharedPreferences cerrar sesión
     private fun logOut() {
         val sp = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         with(sp.edit()){
@@ -50,11 +54,17 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this,MainActivity::class.java))
         finish()
     }
+
+
 //===================================================================================================
     private fun  RepetirFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
         replace(R.id.fl_wrapper, fragment)
         commit()
     }
+
+
+
+
 
 
     }

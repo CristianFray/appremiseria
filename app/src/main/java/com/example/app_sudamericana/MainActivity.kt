@@ -23,7 +23,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sp : SharedPreferences
+
+
   var authservice: AuthService = AuthService()
 
     private lateinit var userID: TextInputEditText
@@ -48,21 +49,20 @@ class MainActivity : AppCompatActivity() {
         UsuarioFocusListener()
         ContraseñaFocusListener()
 
-
-        val botonregistrars = findViewById<TextView>(R.id.TxtRegistrate)
-        botonregistrars.setOnClickListener { val Abrir = Intent (this, RegistroActivity::class.java)
+        //Boton registrarse manda activity_registro
+        val botonregistrarse = findViewById<TextView>(R.id.TxtRegistrate)
+        botonregistrarse.setOnClickListener { val Abrir = Intent (this, RegistroActivity::class.java)
             startActivity(Abrir)}
-//
-//
-//        val botonregistrar = findViewById<Button>(R.id.Btnlogin)
-//        botonregistrar.setOnClickListener { val Abrir = Intent (this, HomeActivity::class.java)
-//            startActivity(Abrir)}
 
-     //   btnlogin.setOnClickListener ({createlogin()})
+
+
+      // btnlogin.setOnClickListener ({createlogin()})
 
       //binding.Btnlogin.setOnClickListener { submitLogin() }
 //==================================================================================================
     }
+
+    //recordar usuario
     private fun rememberUser(sp : SharedPreferences){
         // Recuperamos el contenido de los textField
         val email = binding.usuarioContainer.editText?.text.toString()
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    //checkLogin
     private fun checkLogIn(sp : SharedPreferences){
         if (sp.getString("active","") == "true"){
             startActivity(Intent(this, HomeActivity::class.java))
@@ -110,20 +110,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -176,6 +162,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+    // Login API
     private fun createlogin(){
         authservice.login(Authenticate(userID.text.toString(), password.text.toString()))
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -201,11 +189,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onComplete() {
                 }
             })
-
-//        val botonlogin = findViewById<Button>(R.id.Btnlogin)
-//        botonlogin.setOnClickListener {
-//            val lanzar = Intent( this, HomeActivity::class.java)
-//            startActivity(lanzar)}
 
 
         val Textregistrar = findViewById<TextView>(R.id.TxtRegistrate)

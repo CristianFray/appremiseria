@@ -35,13 +35,13 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var btnRegisterUser: Button
 
 
-
+//======================================================
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+//======================================================
 
         NombreFocusListener()
         ApellidoFocusListener()
@@ -61,8 +61,6 @@ class RegistroActivity : AppCompatActivity() {
         phone    = findViewById(R.id.TxtTelefono)
         username = findViewById(R.id.TxtUsuario)
         btnRegisterUser = findViewById(R.id.BtnRegisterUser)
-
-
 
     }
 
@@ -84,6 +82,8 @@ class RegistroActivity : AppCompatActivity() {
        binding.telefonoContainer.helperText = validarTelefono()
        binding.usuarioContainer.helperText = validarUsuario()
        binding.paswwordContainer.helperText = validarContreña()
+
+
        btnRegisterUser.setOnClickListener ({createUser()})
       // startActivity(Intent(this, MainActivity::class.java))
 
@@ -147,7 +147,7 @@ class RegistroActivity : AppCompatActivity() {
         return null
     }
 
-//validar correo
+    //validar correo
     private fun CorreoFocusListener() {
         binding.TxtCorreo.setOnFocusChangeListener { _, focused ->
             if(!focused)

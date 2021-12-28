@@ -34,16 +34,16 @@ class ReservaFragment : Fragment() {
             super.onViewCreated(view, savedInstanceState)
             _binding = FragmentReservaBinding.bind(view)
 
+            //Funcion Hora y fecha
             binding.apply {
+                //Funcion Hora
                 btnSelectDate.setOnClickListener {
                     // crear una nueva instancia de DatePickerFragment
                     val datePickerFragment = DatePickerFragment()
                     val supportFragmentManager = requireActivity().supportFragmentManager
-
                     //tenemos que implementar setFragmentResultListener
                     supportFragmentManager.setFragmentResultListener(
-                        "REQUEST_KEY",
-                        viewLifecycleOwner
+                        "REQUEST_KEY", viewLifecycleOwner
                     ) { resultKey, bundle ->
                         if (resultKey == "REQUEST_KEY") {
                             val date = bundle.getString("SELECTED_DATE")
@@ -55,28 +55,24 @@ class ReservaFragment : Fragment() {
                     datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
                 }
 
+                //Funcion Hora
                 BtnSelectHora.setOnClickListener {
-
-
                     datePicker.show(childFragmentManager, "tag");
-
-
                 }
                 datePicker =
                     MaterialTimePicker.Builder()
                         .setTimeFormat(TimeFormat.CLOCK_12H)
                         .setHour(12)
                         .setMinute(10)
-
                         .build()
                 timePickerCallback()
             }
         }
 
+
+    //Funcion Hora
     fun timePickerCallback(){
         datePicker?.let{mDatePicker ->
-
-
             mDatePicker.addOnPositiveButtonClickListener {
                 Log.wtf("timePicker1",mDatePicker.hour.toString())
                 var format=if(mDatePicker.hour>=13){
@@ -99,10 +95,15 @@ class ReservaFragment : Fragment() {
 
     }
 
-
-
-        override fun onDestroyView() {
+    override fun onDestroyView() {
             super.onDestroyView()
             _binding = null
         }
+
+
+
+
+
+
+
     }
