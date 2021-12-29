@@ -11,11 +11,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import com.example.app_sudamericana.API.Domain.Response.AuthenticateResponse
+import com.example.app_sudamericana.API.Domain.Response.ReservationResponse
+import com.example.app_sudamericana.API.Service.AuthService
+import com.example.app_sudamericana.API.Service.ReservationService
 import com.example.app_sudamericana.EditarPerfilActivity
+import com.example.app_sudamericana.HomeActivity
 import com.example.app_sudamericana.PruebaActivity
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.enviroments.Credentials
 import com.google.android.material.textfield.TextInputEditText
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +48,7 @@ class PerfilFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    var reservationService: ReservationService = ReservationService();
     override fun onCreate(savedInstanceState: Bundle?) {
         this.spInstance = requireActivity().getSharedPreferences(
             Credentials.NAME_PREFERENCES,
@@ -49,8 +60,43 @@ class PerfilFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        val token = this.spInstance.getString("alksfjlaskjdlkdj", "");
+        if (token != null) {
+            reservationService.getAllReservations(token).subscribeOn(
+                Schedulers.io()
+            ).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<ReservationResponse> {
+                    @Override
+                    override fun onSubscribe(d: Disposable) {
+                    }
 
+                    @Override
+                    override fun onError(e: Throwable) {
+                        if (e.message.toString().equals("HTTP 403 Forbidden")) {
+                            Toast.makeText(
+                                context,
+                                "BORRAR LA SESSION Y VOLVER A INICIAR",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
+                        } else {
+                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    @Override
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onNext(t: ReservationResponse?) {
+                        Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
+
+                    }
+                })
+        } else {
+            Toast.makeText(context, "token vacio", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateView(

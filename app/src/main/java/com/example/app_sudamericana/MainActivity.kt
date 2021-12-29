@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         btnlogin = findViewById(R.id.Btnlogin)
 
         //Guardar datos
-        this.spInstance = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        this.spInstance = getSharedPreferences(Credentials.NAME_PREFERENCES, Context.MODE_PRIVATE)
         checkLogIn()
         binding.Btnlogin.setOnClickListener { rememberUser() }
 
@@ -192,6 +192,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, data.jwt, Toast.LENGTH_SHORT).show()
                     with(sp.edit()) {
                         putString(Credentials.TOKEN_JWT, data.jwt)
+                        putString(Credentials.USER_ID, data.user.idUser)
                         putString(Credentials.USER_USERNAME, data.user.username)
                         putString(Credentials.USER_FIRSTNAME, data.user.firstName)
                         putString(Credentials.USER_LASTNAME, data.user.lastName)
