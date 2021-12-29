@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-      // btnlogin.setOnClickListener ({createlogin()})
+      btnlogin.setOnClickListener ({createlogin()})
 
       //binding.Btnlogin.setOnClickListener { submitLogin() }
 //==================================================================================================
@@ -162,15 +162,21 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+ fun prueba(){
+     Log.d("app","complete")
+ }
+    fun error(){
+        Log.d("app","error")
+    }
     // Login API
     private fun createlogin(){
-        authservice.login(Authenticate(userID.text.toString(), password.text.toString()))
+        authservice.login(Authenticate(password.text.toString(),userID.text.toString()))
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<AuthenticateResponse> {
                 @Override
                 override fun onSubscribe(d: Disposable) {
-                    //disposables.add(d)
+                   // disposables.
+                   // prueba()
                 }
 
                 @Override
@@ -181,12 +187,14 @@ class MainActivity : AppCompatActivity() {
 
                 @Override
                 override fun onError(e: Throwable) {
-
+                    error()
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
 
                 @Override
                 override fun onComplete() {
+
+                    prueba()
                 }
             })
 

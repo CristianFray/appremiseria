@@ -67,25 +67,25 @@ class RegistroActivity : AppCompatActivity() {
 
    //Validar formulario click boton registrar
     private fun submitFormulario() {
-       val validarNombre = binding.nombreContainer.helperText == null
-       val validarApellido = binding.apellidoContainer.helperText == null
-       val validarDireccion = binding.direccionContainer.helperText == null
-       val validarCorreo = binding.emailContainer.helperText == null
-       val validarTelefono = binding.telefonoContainer.helperText == null
-       val validarUsuario = binding.usuarioContainer.helperText == null
-       val validarContreña = binding.paswwordContainer.helperText == null
-
-       binding.nombreContainer.helperText = validarNombre()
-       binding.apellidoContainer.helperText = validarApellido()
-       binding.direccionContainer.helperText = validarDireccion()
-       binding.emailContainer.helperText = validarCorreo()
-       binding.telefonoContainer.helperText = validarTelefono()
-       binding.usuarioContainer.helperText = validarUsuario()
-       binding.paswwordContainer.helperText = validarContreña()
+       if (validarNombre() == null && validarApellido() == null && validarDireccion() == null
+           && validarCorreo() == null && validarTelefono() == null && validarUsuario() == null && validarContreña() == null){
+           createUser()
+       } else{
+           binding.nombreContainer.helperText = validarNombre()
+           binding.apellidoContainer.helperText = validarApellido()
+           binding.direccionContainer.helperText = validarDireccion()
+           binding.emailContainer.helperText = validarCorreo()
+           binding.telefonoContainer.helperText = validarTelefono()
+           binding.usuarioContainer.helperText = validarUsuario()
+           binding.paswwordContainer.helperText = validarContreña()
+       }
 
 
-       btnRegisterUser.setOnClickListener ({createUser()})
-      // startActivity(Intent(this, MainActivity::class.java))
+
+
+
+       //btnRegisterUser.setOnClickListener ({createUser()})
+       //startActivity(Intent(this, MainActivity::class.java))
 
     }
 
@@ -260,7 +260,7 @@ class RegistroActivity : AppCompatActivity() {
                         "Usuario Registrado correctamente",
                         Toast.LENGTH_LONG
                     ).show()
-
+                    this@RegistroActivity.finish()
                     //Log.wtf("login", "data ---> ${Gson().toJson(d)}")
                     //onBackPressed()
 
