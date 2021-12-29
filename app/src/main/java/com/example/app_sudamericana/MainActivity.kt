@@ -13,6 +13,7 @@ import com.example.app_sudamericana.API.Domain.Authenticate
 import com.example.app_sudamericana.API.Domain.Response.AuthenticateResponse
 import com.example.app_sudamericana.API.Service.AuthService
 import com.example.app_sudamericana.databinding.ActivityMainBinding
+import com.example.app_sudamericana.enviroments.Credentials
 import com.example.app_sudamericana.fragments.HomeFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
@@ -25,12 +26,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
 
-  var authservice: AuthService = AuthService()
+    var authservice: AuthService = AuthService()
 
     private lateinit var userID: TextInputEditText
     private lateinit var password: TextInputEditText
     private lateinit var btnlogin: Button
-
+    private lateinit var spInstance: SharedPreferences;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -38,12 +39,12 @@ class MainActivity : AppCompatActivity() {
 
         userID = findViewById(R.id.TxtUser)
         password = findViewById(R.id.passwordEditText)
-        btnlogin= findViewById(R.id.Btnlogin)
+        btnlogin = findViewById(R.id.Btnlogin)
 
         //Guardar datos
-        val sp = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
-        checkLogIn(sp)
-        binding.Btnlogin.setOnClickListener { rememberUser(sp) }
+        this.spInstance = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        checkLogIn()
+        binding.Btnlogin.setOnClickListener { rememberUser() }
 
 
         UsuarioFocusListener()
@@ -51,28 +52,30 @@ class MainActivity : AppCompatActivity() {
 
         //Boton registrarse manda activity_registro
         val botonregistrarse = findViewById<TextView>(R.id.TxtRegistrate)
-        botonregistrarse.setOnClickListener { val Abrir = Intent (this, RegistroActivity::class.java)
-            startActivity(Abrir)}
+        botonregistrarse.setOnClickListener {
+            val Abrir = Intent(this, RegistroActivity::class.java)
+            startActivity(Abrir)
+        }
 
 
 
-      btnlogin.setOnClickListener ({createlogin()})
+        btnlogin.setOnClickListener({ createlogin() })
 
-      //binding.Btnlogin.setOnClickListener { submitLogin() }
+        //binding.Btnlogin.setOnClickListener { submitLogin() }
 //==================================================================================================
     }
 
     //recordar usuario
-    private fun rememberUser(sp : SharedPreferences){
+    private fun rememberUser() {
         // Recuperamos el contenido de los textField
         val email = binding.usuarioContainer.editText?.text.toString()
         val password = binding.passwordContainer.editText?.text.toString()
 
         // Verificamos si los campos no son vacíos
-        if (email.isNotEmpty() && password.isNotEmpty()){
+        if (email.isNotEmpty() && password.isNotEmpty()) {
             val checkBox = binding.checkBox
-            if (checkBox.isChecked){
-                with(sp.edit()){
+            if (checkBox.isChecked) {
+                with(this.spInstance.edit()) {
 
                     putString("email", email)
                     putString("password", password)
@@ -82,8 +85,8 @@ class MainActivity : AppCompatActivity() {
                     apply()
 
                 }
-            }else{
-                with(sp.edit()){
+            } else {
+                with(this.spInstance.edit()) {
                     putString("active", "true")
                     putString("remember", "false")
 
@@ -92,25 +95,29 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }else{
+        } else {
             // En caso los datos no estén completos mostramos un Toast
             submitLogin()
         }
     }
 
     //checkLogin
-    private fun checkLogIn(sp : SharedPreferences){
-        if (sp.getString("active","") == "true"){
+    private fun checkLogIn() {
+        if (this.spInstance.getString("active", "") == "true") {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }else{
-            if (sp.getString("remember","") == "true"){
-                binding.usuarioContainer.editText?.setText(sp.getString("email",""))
-                binding.passwordContainer.editText?.setText(sp.getString("password",""))
+        } else {
+            if (this.spInstance.getString("remember", "") == "true") {
+                binding.usuarioContainer.editText?.setText(this.spInstance.getString("email", ""))
+                binding.passwordContainer.editText?.setText(
+                    this.spInstance.getString(
+                        "password",
+                        ""
+                    )
+                )
             }
         }
     }
-
 
 
     private fun submitLogin() {
@@ -126,16 +133,15 @@ class MainActivity : AppCompatActivity() {
     //validar Usuario
     private fun UsuarioFocusListener() {
         binding.TxtUser.setOnFocusChangeListener { _, focused ->
-            if(!focused)
-            {
+            if (!focused) {
                 binding.usuarioContainer.helperText = validarUsuario()
             }
         }
     }
+
     private fun validarUsuario(): String? {
         val nombreText = binding.TxtUser.text.toString()
-        if(nombreText.length<5)
-        {
+        if (nombreText.length < 5) {
             return "Escribe tu Usuario"
         }
         return null
@@ -145,44 +151,56 @@ class MainActivity : AppCompatActivity() {
     //validar Contraseña
     private fun ContraseñaFocusListener() {
         binding.passwordEditText.setOnFocusChangeListener { _, focused ->
-            if(!focused)
-            {
+            if (!focused) {
                 binding.passwordContainer.helperText = validarContraseña()
             }
         }
     }
+
     private fun validarContraseña(): String? {
         val nombreText = binding.passwordEditText.text.toString()
-        if(nombreText.length<7)
-        {
+        if (nombreText.length < 7) {
             return "Escribe tu Contraseña"
         }
         return null
     }
 
 
-
- fun prueba(){
-     Log.d("app","complete")
- }
-    fun error(){
-        Log.d("app","error")
+    fun prueba() {
+        Log.d("app", "complete")
     }
+
+    fun error() {
+        Log.d("app", "error")
+    }
+
     // Login API
-    private fun createlogin(){
-        authservice.login(Authenticate(password.text.toString(),userID.text.toString()))
+    private fun createlogin() {
+        val sp = this.spInstance;
+
+        authservice.login(Authenticate(password.text.toString(), userID.text.toString()))
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<AuthenticateResponse> {
                 @Override
                 override fun onSubscribe(d: Disposable) {
-                   // disposables.
-                   // prueba()
+                    // disposables.
+                    // prueba()
                 }
 
                 @Override
                 override fun onNext(data: AuthenticateResponse) {
                     Toast.makeText(this@MainActivity, data.jwt, Toast.LENGTH_SHORT).show()
-
+                    with(sp.edit()) {
+                        putString(Credentials.TOKEN_JWT, data.jwt)
+                        putString(Credentials.USER_USERNAME, data.user.username)
+                        putString(Credentials.USER_FIRSTNAME, data.user.firstName)
+                        putString(Credentials.USER_LASTNAME, data.user.lastName)
+                        putString(Credentials.USER_EMAIL, data.user.email)
+                        putString(Credentials.USER_ADDRESS, data.user.address)
+                        putString(Credentials.SESSION, "true")
+                        apply()
+                    }
+                    startActivity(Intent(this@MainActivity, HomeActivity::class.java))
                 }
 
                 @Override
@@ -201,7 +219,8 @@ class MainActivity : AppCompatActivity() {
 
         val Textregistrar = findViewById<TextView>(R.id.TxtRegistrate)
         Textregistrar.setOnClickListener {
-            val lanzar = Intent ( this, RegistroActivity::class.java)
-            startActivity(lanzar)}
+            val lanzar = Intent(this, RegistroActivity::class.java)
+            startActivity(lanzar)
+        }
     }
 }
