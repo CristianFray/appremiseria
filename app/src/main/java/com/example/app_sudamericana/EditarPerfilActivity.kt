@@ -45,28 +45,37 @@ class EditarPerfilActivity : AppCompatActivity() {
 
 
     }
-
+    //SharedPreferences cerrar sesión
+    private fun logOut() {
+        val sp = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        with(sp.edit()){
+            putString("active", "false")
+            apply()
+        }
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
+    }
 
 private fun cargarDatos(){
     val nombre = this.spInstance.getString(Credentials.USER_FIRSTNAME, "");
     val apellido = this.spInstance.getString(Credentials.USER_LASTNAME, "");
     val direccion = this.spInstance.getString(Credentials.USER_ADDRESS, "");
     val telefono = this.spInstance.getString(Credentials.USER_TELEFONO, "");
-    val pasword = this.spInstance.getString(Credentials.USER_PASSWORD, "");
+    val password = this.spInstance.getString(Credentials.USER_PASSWORD, "");
     binding.TxtNombre.setText(nombre)
     binding.TxtApellido.setText(apellido)
     binding.TxtDireccion.setText(direccion)
     binding.TxtTelefono.setText(telefono)
-    binding.TxtPassword.setText(pasword)
+    binding.TxtPassword.setText(password)
 
 }
 
 
     private fun updateUser() {
-        val token = this.spInstance.getString(Credentials.TOKEN_JWT, "fff");
+        val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
         val userID = this.spInstance.getString(Credentials.USER_ID, 1.toString());
-        val email = this.spInstance.getString(Credentials.USER_EMAIL, "fff");
-        val user = this.spInstance.getString(Credentials.USER_USERNAME, "fff");
+        val email = this.spInstance.getString(Credentials.USER_EMAIL, "");
+        val user = this.spInstance.getString(Credentials.USER_USERNAME, "");
         if (token  != null && email!= null && userID!= null && user!= null) {
             var userUpdate = UserUpdateDto(
                 true,
@@ -74,7 +83,7 @@ private fun cargarDatos(){
                 email,
                 binding.TxtNombre.getText().toString(),
                 userID.toString().toInt(),
-                binding.TxtApellido.getText().toString(),
+               binding.TxtApellido.getText().toString(),
                 binding.TxtPassword.getText().toString(),
                 binding.TxtTelefono.getText().toString(),
                 user,
@@ -95,7 +104,7 @@ private fun cargarDatos(){
                             Toast.LENGTH_LONG
                         ).show()
                         this@EditarPerfilActivity.finish()
-
+                        logOut()
                     }
 
                     override fun onSubscribe(d: Disposable) {
