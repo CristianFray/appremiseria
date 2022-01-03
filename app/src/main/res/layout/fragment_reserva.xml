@@ -214,7 +214,7 @@
         android:layout_marginTop="551dp">
 
         <Button
-            android:id="@+id/Btnregistrarse"
+            android:id="@+id/BtnSolicitar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
