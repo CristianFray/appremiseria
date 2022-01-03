@@ -19,13 +19,14 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-
+    val disposables: CompositeDisposable = CompositeDisposable()
     var authservice: AuthService = AuthService()
 
     private lateinit var userID: TextInputEditText
@@ -59,9 +60,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        btnlogin.setOnClickListener({ createlogin() })
+        //btnlogin.setOnClickListener({ createlogin() })
 
-        //binding.Btnlogin.setOnClickListener { submitLogin() }
+        binding.Btnlogin.setOnClickListener { submitLogin() }
 //==================================================================================================
     }
 
@@ -120,13 +121,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun submitLogin() {
-        val validarUsuario = binding.usuarioContainer.helperText == null
-        val validarContraseña = binding.passwordContainer.helperText == null
-
-        binding.usuarioContainer.helperText = validarUsuario()
-        binding.passwordContainer.helperText = validarContraseña()
-
+    private fun submitLogin() { //valida si el usuario existe en la db
+        if (validarUsuario() == null && validarContraseña() == null){
+            createlogin()
+        } else { //mensaje error de datos
+            binding.usuarioContainer.helperText = validarUsuario()
+            binding.passwordContainer.helperText = validarContraseña()
+        }
 
     }
 
@@ -141,7 +142,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun validarUsuario(): String? {
         val nombreText = binding.TxtUser.text.toString()
-        if (nombreText.length < 5) {
+        if (nombreText.length < 3) {
             return "Escribe tu Usuario"
         }
         return null
@@ -159,20 +160,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun validarContraseña(): String? {
         val nombreText = binding.passwordEditText.text.toString()
-        if (nombreText.length < 7) {
+        if (nombreText.length < 5) {
             return "Escribe tu Contraseña"
         }
         return null
     }
 
 
-    fun prueba() {
-        Log.d("app", "complete")
-    }
 
-    fun error() {
-        Log.d("app", "error")
-    }
 
     // Login API
     private fun createlogin() {
@@ -183,22 +178,23 @@ class MainActivity : AppCompatActivity() {
             .subscribe(object : Observer<AuthenticateResponse> {
                 @Override
                 override fun onSubscribe(d: Disposable) {
-                    // disposables.
-                    // prueba()
+                    disposables.add(d)
                 }
 
                 @Override
                 override fun onNext(data: AuthenticateResponse) {
-                    Toast.makeText(this@MainActivity, data.jwt, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity,data.user.firstName, Toast.LENGTH_SHORT).show()
                     with(sp.edit()) {
                         putString(Credentials.TOKEN_JWT, data.jwt)
-                        putString(Credentials.USER_ID, data.user.idUser)
+                        putString(Credentials.USER_ID, data.user.idUser.toString())
                         putString(Credentials.USER_USERNAME, data.user.username)
                         putString(Credentials.USER_FIRSTNAME, data.user.firstName)
                         putString(Credentials.USER_LASTNAME, data.user.lastName)
                         putString(Credentials.USER_EMAIL, data.user.email)
                         putString(Credentials.USER_ADDRESS, data.user.address)
                         putString(Credentials.SESSION, "true")
+                        putString(Credentials.USER_PASSWORD, password.text.toString())
+                        putString(Credentials.USER_TELEFONO, data.user.phone)
                         apply()
                     }
                     startActivity(Intent(this@MainActivity, HomeActivity::class.java))
@@ -206,14 +202,18 @@ class MainActivity : AppCompatActivity() {
 
                 @Override
                 override fun onError(e: Throwable) {
-                    error()
-                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Usuario no existe",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    //Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
 
                 @Override
                 override fun onComplete() {
+                    disposables.clear()
 
-                    prueba()
                 }
             })
 

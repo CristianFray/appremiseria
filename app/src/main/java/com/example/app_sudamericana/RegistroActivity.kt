@@ -1,21 +1,21 @@
 package com.example.app_sudamericana
 
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.Toast
+import com.example.app_sudamericana.API.Domain.Authenticate
 import com.example.app_sudamericana.API.Domain.Response.UserRegisterResponse
 import com.example.app_sudamericana.API.Domain.UserRegister
 import com.example.app_sudamericana.API.Service.AuthService
 import com.example.app_sudamericana.databinding.ActivityRegistroBinding
 import com.google.android.material.textfield.TextInputEditText
-import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_registro.*
@@ -24,6 +24,7 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroBinding
 
       var authservice: AuthService = AuthService()
+    val disposables: CompositeDisposable = CompositeDisposable()
 
     private lateinit var address: TextInputEditText
     private lateinit var email: TextInputEditText
@@ -42,7 +43,7 @@ class RegistroActivity : AppCompatActivity() {
         binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //======================================================
-
+        authservice.login(Authenticate("fdsfsd","fdsfdsfdsf"))
         NombreFocusListener()
         ApellidoFocusListener()
         DireccionFocusListener()
@@ -68,7 +69,8 @@ class RegistroActivity : AppCompatActivity() {
    //Validar formulario click boton registrar
     private fun submitFormulario() {
        if (validarNombre() == null && validarApellido() == null && validarDireccion() == null
-           && validarCorreo() == null && validarTelefono() == null && validarUsuario() == null && validarContreña() == null){
+           && validarCorreo() == null && validarTelefono() == null && validarUsuario() == null
+           && validarContreña() == null){
            createUser()
        } else{
            binding.nombreContainer.helperText = validarNombre()
@@ -79,14 +81,6 @@ class RegistroActivity : AppCompatActivity() {
            binding.usuarioContainer.helperText = validarUsuario()
            binding.paswwordContainer.helperText = validarContreña()
        }
-
-
-
-
-
-       //btnRegisterUser.setOnClickListener ({createUser()})
-       //startActivity(Intent(this, MainActivity::class.java))
-
     }
 
 
@@ -254,21 +248,18 @@ class RegistroActivity : AppCompatActivity() {
             .subscribe(object : Observer<UserRegisterResponse> {
                 @Override
                 override fun onSubscribe(d: Disposable) {
-                    //disposables.add(d)
-                    Toast.makeText(
-                        this@RegistroActivity,
-                        "Usuario Registrado correctamente",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    this@RegistroActivity.finish()
-                    //Log.wtf("login", "data ---> ${Gson().toJson(d)}")
-                    //onBackPressed()
+                    disposables.add(d)
 
                 }
 
                 @Override
                 override fun onNext(news: UserRegisterResponse) {
-//
+                Toast.makeText(
+                        this@RegistroActivity,
+                        "Usuario Registrado correctamente",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    this@RegistroActivity.finish()
                 }
 
                 @Override
@@ -283,6 +274,7 @@ class RegistroActivity : AppCompatActivity() {
 
                 @Override
                 override fun onComplete() {
+                    disposables.clear()
                 }
             })
     }

@@ -8,45 +8,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.example.app_sudamericana.API.Domain.Response.AuthenticateResponse
 import com.example.app_sudamericana.API.Domain.Response.ReservationResponse
-import com.example.app_sudamericana.API.Service.AuthService
 import com.example.app_sudamericana.API.Service.ReservationService
 import com.example.app_sudamericana.EditarPerfilActivity
-import com.example.app_sudamericana.HomeActivity
-import com.example.app_sudamericana.PruebaActivity
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.enviroments.Credentials
-import com.google.android.material.textfield.TextInputEditText
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import org.w3c.dom.Text
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PerfilFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PerfilFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var spInstance: SharedPreferences;
     private lateinit var nameProfile: TextView
     private lateinit var emailProfile: TextView
     var linearLayaoutEditPerfil: LinearLayout? = null
+    val disposables: CompositeDisposable = CompositeDisposable()
 
-    private var param1: String? = null
-    private var param2: String? = null
 
     var reservationService: ReservationService = ReservationService();
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +40,8 @@ class PerfilFragment : Fragment() {
         );
 
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        val token = this.spInstance.getString("alksfjlaskjdlkdj", "");
+
+        val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
         if (token != null) {
             reservationService.getAllReservations(token).subscribeOn(
                 Schedulers.io()
@@ -68,6 +49,7 @@ class PerfilFragment : Fragment() {
                 .subscribe(object : Observer<ReservationResponse> {
                     @Override
                     override fun onSubscribe(d: Disposable) {
+                        disposables.add(d)
                     }
 
                     @Override
@@ -86,7 +68,7 @@ class PerfilFragment : Fragment() {
 
                     @Override
                     override fun onComplete() {
-
+                    disposables.clear()
                     }
 
                     override fun onNext(t: ReservationResponse?) {
@@ -130,15 +112,6 @@ class PerfilFragment : Fragment() {
         emailProfile.setText(emailText);
     }
 
-    companion object {
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PerfilFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }

@@ -3,6 +3,7 @@ package com.example.app_sudamericana.API.Repository
 import com.example.app_sudamericana.API.Domain.Authenticate
 import com.example.app_sudamericana.API.Domain.Response.AuthenticateResponse
 import com.example.app_sudamericana.API.Domain.Response.UserRegisterResponse
+import com.example.app_sudamericana.API.Domain.Response.UserUpdateResponse
 import com.example.app_sudamericana.API.Domain.UserRegister
 import com.example.app_sudamericana.API.Domain.dto.UserUpdateDto
 import com.example.app_sudamericana.enviroments.Credentials
@@ -16,6 +17,6 @@ interface IUserRepository {
     fun updateUser(
         @Header("AUTHORIZATION") token: String,
         @Body data: UserUpdateDto
-    ): Observable<UserUpdateDto>
+    ): Observable<UserUpdateResponse>
 
 }

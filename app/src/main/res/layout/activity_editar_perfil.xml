@@ -92,6 +92,7 @@
                             app:startIconDrawable="@drawable/ico_usuario">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/TxtNombre"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -130,6 +131,7 @@
                             app:startIconDrawable="@drawable/ico_usuario">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/TxtApellido"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -169,6 +171,7 @@
                             app:startIconDrawable="@drawable/ico_mapa">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/TxtDireccion"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -206,6 +209,7 @@
                             app:startIconDrawable="@drawable/ico_telefono">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/TxtTelefono"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -243,6 +247,7 @@
                             app:startIconDrawable="@drawable/ico_password">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/TxtPassword"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>

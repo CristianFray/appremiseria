@@ -2,7 +2,7 @@ package com.example.app_sudamericana.enviroments
 
 object Credentials {
     //    browser-sync start --proxy "http://localhost:8080/" --files "css/*.css"
-    const val URL_API = "http://192.168.1.8:3000/" //88
+    const val URL_API = "http://192.168.1.28:3000/" //88
     const val URI_NEWS = "news" //hrlprincipal
     const val URI_SERVICES = "services"
     const val URI_INFO = "info"
@@ -20,4 +20,6 @@ object Credentials {
     const val USER_EMAIL = "user_email";
     const val USER_ADDRESS = "user_address";
     const val SESSION = "active";
+    const val USER_PASSWORD ="user_password"
+    const val USER_TELEFONO ="user_telefono"
 }
