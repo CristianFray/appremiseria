@@ -5,4 +5,13 @@
     <string name="transtionname_picture">transtionnamepicture</string>
     <string name="Requerido">Requerido</string>
     <string name="password">password</string>
+
+
+    <string-array name="country_location">
+        <item>Cristian</item>
+        <item>Maximo</item>
+        <item>Gabriel</item>
+        <item>celeste</item>
+    </string-array>
+
 </resources>

@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.RegisterReservation
 import com.example.app_sudamericana.API.Domain.Response.RegisterReservationResponse
 import com.example.app_sudamericana.API.Domain.Response.UserUpdateResponse
 import com.example.app_sudamericana.API.Service.ReservationService
+import com.example.app_sudamericana.R
 import com.example.app_sudamericana.databinding.FragmentReservaBinding
 import com.example.app_sudamericana.enviroments.Credentials
 import com.example.app_sudamericana.enviroments.Credentials.USER_ID
@@ -37,6 +39,8 @@ class ReservaFragment : Fragment() {
     var dateCurrentPicker: String = "";
     var timeCurrentPicker: String = "";
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,11 +58,14 @@ class ReservaFragment : Fragment() {
         return binding.root
 
 
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentReservaBinding.bind(view)
+
 
         //Funcion Hora y fecha
         binding.apply {
@@ -100,7 +107,10 @@ class ReservaFragment : Fragment() {
             timePickerCallback()
         }
 
+
+
     }
+
 
 
     //Funcion Hora
@@ -185,10 +195,35 @@ class ReservaFragment : Fragment() {
     }
 
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        //1
+        //Recuperamos los elementos del string array
+        val countries = resources.getStringArray(R.array.country_location)
+
+        //1
+        //Creación del adapter
+        val adapter = ArrayAdapter(
+            this, // Contexto
+            R.layout.list_item, //Layout del diseño
+            countries //Array
+        )
+        //1
+        //Agregamos el adapter al autoCompleteTextView
+        with(binding.autoCompleteTextView) {
+            setAdapter(adapter)
+        }
+    }
+
 
 
 }
