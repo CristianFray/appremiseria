@@ -9,6 +9,7 @@ object Credentials {
     const val URL_AUTH = "api/auth"
     const val URL_RESERVATION = "api/reservation"
     const val URL_USER = "api/user"
+    const val URL_TARIFF = "api/tariff"
     const val NAME_PREFERENCES = "my_prefs"
 
 
@@ -22,4 +23,6 @@ object Credentials {
     const val SESSION = "active";
     const val USER_PASSWORD ="user_password"
     const val USER_TELEFONO ="user_telefono"
+
+    const val HTTP403 ="HTTP 403 Forbidden"
 }

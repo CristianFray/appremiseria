@@ -18,7 +18,7 @@ interface IAuthRepository {
     fun registerUser(@Body userData: UserRegister): Observable<UserRegisterResponse>
 
     @Headers("Content-Type: application/json")
-    @POST(Credentials.URL_AUTH+"/authenticate")
+    @POST(Credentials.URL_AUTH+"/authenticatePassengers")
     fun login(@Body userData: Authenticate): Observable<AuthenticateResponse>
 
 

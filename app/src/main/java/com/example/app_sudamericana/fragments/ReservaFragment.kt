@@ -12,8 +12,11 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.RegisterReservation
 import com.example.app_sudamericana.API.Domain.Response.RegisterReservationResponse
+import com.example.app_sudamericana.API.Domain.Response.ReservationResponse
+import com.example.app_sudamericana.API.Domain.Response.TariffResponse
 import com.example.app_sudamericana.API.Domain.Response.UserUpdateResponse
 import com.example.app_sudamericana.API.Service.ReservationService
+import com.example.app_sudamericana.API.Service.TariffService
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.databinding.FragmentReservaBinding
 import com.example.app_sudamericana.enviroments.Credentials
@@ -31,14 +34,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class ReservaFragment : Fragment() {
     val disposables: CompositeDisposable = CompositeDisposable()
     var reservation: ReservationService = ReservationService()
-    var dateCreator: DateCreatorFray = DateCreatorFray()
     private lateinit var spInstance: SharedPreferences;
     private var _binding: FragmentReservaBinding? = null
     private val binding get() = _binding!!
     private lateinit var datePicker: MaterialTimePicker
     var dateCurrentPicker: String = "";
     var timeCurrentPicker: String = "";
-
+    var tariffService = TariffService();
 
 
     override fun onCreateView(
@@ -55,10 +57,9 @@ class ReservaFragment : Fragment() {
         );
 
         binding.BtnSolicitar.setOnClickListener({ reservation() })
-        this.cargarDataSelect()
+        this.cargarTarifas()
+
         return binding.root
-
-
 
 
     }
@@ -109,9 +110,7 @@ class ReservaFragment : Fragment() {
         }
 
 
-
     }
-
 
 
     //Funcion Hora
@@ -196,14 +195,14 @@ class ReservaFragment : Fragment() {
     }
 
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    fun cargarDataSelect(){
-        //1
+    fun cargarDataSelect(data: TariffResponse) {
+        val entries: List<String> = data.toList().map { "${it.origin} - ${it.destination}" };
+
         //Recuperamos los elementos del string array
         val countries = resources.getStringArray(R.array.country_location)
         //1
@@ -212,7 +211,7 @@ class ReservaFragment : Fragment() {
             ArrayAdapter(
                 it, // Contexto
                 R.layout.list_item, //Layout del diseño
-                countries //Array
+                entries //Array
             )
         }
         //1
@@ -222,6 +221,41 @@ class ReservaFragment : Fragment() {
         }
     }
 
+    fun cargarTarifas() {
+        val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
+        if (token != null) {
+            tariffService.getAllTariffs(token).subscribeOn(
+                Schedulers.io()
+            ).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<TariffResponse> {
+                    override fun onSubscribe(d: Disposable) {
+                        disposables.add(d)
+                    }
 
+                    override fun onNext(t: TariffResponse) {
+                        Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
+                        cargarDataSelect(t)
 
+                    }
+
+                    override fun onError(e: Throwable) {
+                        if (e.message.toString().equals(Credentials.HTTP403)) {
+                            Toast.makeText(
+                                context,
+                                "BORRAR LA SESSION Y VOLVER A INICIAR",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        } else {
+                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onComplete() {
+                        disposables.clear()
+                    }
+
+                })
+        }
+    }
 }

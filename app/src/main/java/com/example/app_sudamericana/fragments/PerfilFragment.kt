@@ -54,7 +54,7 @@ class PerfilFragment : Fragment() {
 
                     @Override
                     override fun onError(e: Throwable) {
-                        if (e.message.toString().equals("HTTP 403 Forbidden")) {
+                        if (e.message.toString().equals(Credentials.HTTP403)) {
                             Toast.makeText(
                                 context,
                                 "BORRAR LA SESSION Y VOLVER A INICIAR",
@@ -68,7 +68,7 @@ class PerfilFragment : Fragment() {
 
                     @Override
                     override fun onComplete() {
-                    disposables.clear()
+                        disposables.clear()
                     }
 
                     override fun onNext(t: ReservationResponse?) {
