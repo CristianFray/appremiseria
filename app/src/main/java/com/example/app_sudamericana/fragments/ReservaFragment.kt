@@ -1,5 +1,6 @@
 package com.example.app_sudamericana.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.RegisterReservation
@@ -41,8 +43,11 @@ class ReservaFragment : Fragment() {
     var dateCurrentPicker: String = "";
     var timeCurrentPicker: String = "";
     var tariffService = TariffService();
+    lateinit var tariffList: TariffResponse;
+    var idTariffSelected: Int = 0;
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,6 +62,16 @@ class ReservaFragment : Fragment() {
         );
 
         binding.BtnSolicitar.setOnClickListener({ reservation() })
+        binding.selectTarifas.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+            var tariffSelect = tariffList[position];
+            this.idTariffSelected = tariffSelect.idTariff;
+            binding.txtMontoTarifa.setText(
+                "S./ ${
+                    tariffSelect.amount.toString().toDouble()
+                }"
+            );
+
+        })
         this.cargarTarifas()
 
         return binding.root
@@ -147,18 +162,14 @@ class ReservaFragment : Fragment() {
     private fun reservation() {
         val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
         val userID = this.spInstance.getString(Credentials.USER_ID, 1.toString());
-        Toast.makeText(
-            context,
-            timeCurrentPicker,
-            Toast.LENGTH_LONG
-        ).show()
+
         if (token != null && userID != null) {
             reservation.seveReservation(
                 token, RegisterReservation(
                     binding.TxtDescripcion.getText().toString(),
                     userID.toString().toInt(),
                     1,
-                    1, "${dateCurrentPicker}T${timeCurrentPicker}"
+                    this.idTariffSelected, "${dateCurrentPicker}T${timeCurrentPicker}"
                 )
             )
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -202,10 +213,6 @@ class ReservaFragment : Fragment() {
 
     fun cargarDataSelect(data: TariffResponse) {
         val entries: List<String> = data.toList().map { "${it.origin} - ${it.destination}" };
-
-        //Recuperamos los elementos del string array
-        val countries = resources.getStringArray(R.array.country_location)
-        //1
         //Creación del adapter
         val adapter = context?.let {
             ArrayAdapter(
@@ -214,9 +221,8 @@ class ReservaFragment : Fragment() {
                 entries //Array
             )
         }
-        //1
         //Agregamos el adapter al autoCompleteTextView
-        with(binding.autoCompleteTextView) {
+        with(binding.selectTarifas) {
             setAdapter(adapter)
         }
     }
@@ -233,7 +239,8 @@ class ReservaFragment : Fragment() {
                     }
 
                     override fun onNext(t: TariffResponse) {
-                        Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT).show()
+                        tariffList = t;
                         cargarDataSelect(t)
 
                     }

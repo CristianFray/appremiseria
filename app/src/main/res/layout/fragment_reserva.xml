@@ -73,11 +73,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoCompleteTextView"
+                    android:id="@+id/selectTarifas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:hint="Nombres"/>
+                    android:hint="Selecciona una Tarifa"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -189,7 +189,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/BtnFwecha"
+                android:id="@+id/txtMontoTarifa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
