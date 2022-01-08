@@ -55,6 +55,7 @@ class ReservaFragment : Fragment() {
         );
 
         binding.BtnSolicitar.setOnClickListener({ reservation() })
+        this.cargarDataSelect()
         return binding.root
 
 
@@ -201,22 +202,19 @@ class ReservaFragment : Fragment() {
         _binding = null
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
+    fun cargarDataSelect(){
         //1
         //Recuperamos los elementos del string array
         val countries = resources.getStringArray(R.array.country_location)
-
         //1
         //Creación del adapter
-        val adapter = ArrayAdapter(
-            this, // Contexto
-            R.layout.list_item, //Layout del diseño
-            countries //Array
-        )
+        val adapter = context?.let {
+            ArrayAdapter(
+                it, // Contexto
+                R.layout.list_item, //Layout del diseño
+                countries //Array
+            )
+        }
         //1
         //Agregamos el adapter al autoCompleteTextView
         with(binding.autoCompleteTextView) {
