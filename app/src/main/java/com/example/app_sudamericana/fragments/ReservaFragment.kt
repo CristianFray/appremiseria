@@ -72,15 +72,12 @@ class ReservaFragment : Fragment() {
             );
 
         })
-        //this.cargarTarifas()
+        this.cargarTarifas()
 
         return binding.root
 
 
     }
-
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -214,67 +211,58 @@ class ReservaFragment : Fragment() {
         _binding = null
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-
-        fun cargarDataSelect(data: TariffResponse) {
-            val entries: List<String> = data.toList().map { "${it.origin} - ${it.destination}" };
-            //Creación del adapter
-            val adapter = context?.let {
-                ArrayAdapter(
-                    it, // Contexto
-                    R.layout.list_item, //Layout del diseño
-                    entries //Array
-                )
-            }
-            //Agregamos el adapter al autoCompleteTextView
-            with(binding.selectTarifas) {
-                setAdapter(adapter)
-            }
-
+    fun cargarDataSelect(data: TariffResponse) {
+        val entries: List<String> = data.toList().map { "${it.origin} - ${it.destination}" };
+        //Creación del adapter
+        val adapter = context?.let {
+            ArrayAdapter(
+                it, // Contexto
+                R.layout.list_item, //Layout del diseño
+                entries //Array
+            )
         }
+        //Agregamos el adapter al autoCompleteTextView
+        with(binding.selectTarifas) {
+            setAdapter(adapter)
+        }
+    }
 
-        fun cargarTarifas() {
-            val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
-            if (token != null) {
-                tariffService.getAllTariffs(token).subscribeOn(
-                    Schedulers.io()
-                ).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<TariffResponse> {
-                        override fun onSubscribe(d: Disposable) {
-                            disposables.add(d)
+    fun cargarTarifas() {
+        val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
+        if (token != null) {
+            tariffService.getAllTariffs(token).subscribeOn(
+                Schedulers.io()
+            ).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<TariffResponse> {
+                    override fun onSubscribe(d: Disposable) {
+                        disposables.add(d)
+                    }
+
+                    override fun onNext(t: TariffResponse) {
+                        Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT).show()
+                        tariffList = t;
+                        cargarDataSelect(t)
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        if (e.message.toString().equals(Credentials.HTTP403)) {
+                            Toast.makeText(
+                                context,
+                                "BORRAR LA SESSION Y VOLVER A INICIAR",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        } else {
+                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }
+                    }
 
-                        override fun onNext(t: TariffResponse) {
-                            Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT)
-                                .show()
-                            tariffList = t;
-                            cargarDataSelect(t)
+                    override fun onComplete() {
+                        disposables.clear()
+                    }
 
-                        }
-
-                        override fun onError(e: Throwable) {
-                            if (e.message.toString().equals(Credentials.HTTP403)) {
-                                Toast.makeText(
-                                    context,
-                                    "BORRAR LA SESSION Y VOLVER A INICIAR",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                            } else {
-                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
-                        override fun onComplete() {
-                            disposables.clear()
-                        }
-
-                    })
-            }
+                })
         }
     }
 }
