@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.Response.ReservationResponse
 import com.example.app_sudamericana.API.Service.ReservationService
+import com.example.app_sudamericana.Adapter.ReservationsAdapter
 import com.example.app_sudamericana.EditarPerfilActivity
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.enviroments.Credentials
@@ -40,6 +41,8 @@ class PerfilFragment : Fragment() {
         );
 
         super.onCreate(savedInstanceState)
+
+
 
         val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
         if (token != null) {
@@ -72,6 +75,7 @@ class PerfilFragment : Fragment() {
                     }
 
                     override fun onNext(t: ReservationResponse?) {
+
                         Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
 
                     }

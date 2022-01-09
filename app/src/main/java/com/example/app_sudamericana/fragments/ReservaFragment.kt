@@ -206,22 +206,6 @@ class ReservaFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
 
-        //1
-        //Recuperamos los elementos del string array
-        val countries = resources.getStringArray(R.array.country_location)
-
-        //1
-        //Creación del adapter
-        val adapter = ArrayAdapter(
-            this, // Contexto
-            R.layout.list_item, //Layout del diseño
-            countries //Array
-        )
-        //1
-        //Agregamos el adapter al autoCompleteTextView
-        with(binding.autoCompleteTextView) {
-            setAdapter(adapter)
-        }
     }
 
 
