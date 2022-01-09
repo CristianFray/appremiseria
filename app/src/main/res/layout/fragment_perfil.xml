@@ -162,7 +162,8 @@
                 android:textStyle="italic" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewMyPost"
+                android:id="@+id/recyclerViewMyPosts"
+                tools:listitem="@layout/cardview_my_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />

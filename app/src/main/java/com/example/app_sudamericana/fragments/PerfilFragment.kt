@@ -11,7 +11,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.app_sudamericana.API.Domain.Response.ReservationResponse
+import com.example.app_sudamericana.API.Domain.Response.ReservationResponseItem
 import com.example.app_sudamericana.API.Service.ReservationService
 import com.example.app_sudamericana.Adapter.ReservationsAdapter
 import com.example.app_sudamericana.EditarPerfilActivity
@@ -31,14 +34,24 @@ class PerfilFragment : Fragment() {
     private lateinit var emailProfile: TextView
     var linearLayaoutEditPerfil: LinearLayout? = null
     val disposables: CompositeDisposable = CompositeDisposable()
+    private lateinit var mRecyclerViewMyPost: RecyclerView
+    private lateinit var hayRespuesta: TextView
+
+    private lateinit var nReserva: TextView
+private lateinit var adapterReservation: ReservationsAdapter
 
 
     var reservationService: ReservationService = ReservationService();
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         this.spInstance = requireActivity().getSharedPreferences(
             Credentials.NAME_PREFERENCES,
             Context.MODE_PRIVATE
         );
+
+
+
 
         super.onCreate(savedInstanceState)
 
@@ -57,7 +70,7 @@ class PerfilFragment : Fragment() {
 
                     @Override
                     override fun onError(e: Throwable) {
-                        if (e.message.toString().equals("HTTP 403 Forbidden")) {
+                        if (e.message.toString().equals(Credentials.HTTP403)) {
                             Toast.makeText(
                                 context,
                                 "BORRAR LA SESSION Y VOLVER A INICIAR",
@@ -71,11 +84,18 @@ class PerfilFragment : Fragment() {
 
                     @Override
                     override fun onComplete() {
-                    disposables.clear()
+                        disposables.clear()
                     }
 
                     override fun onNext(t: ReservationResponse?) {
 
+                        t?.let { myResponse->
+                            adapterReservation?.let {mAdapter ->
+                                hayRespuesta.visibility=View.GONE
+                                mAdapter.setItems(myResponse)
+                                nReserva.text="${myResponse.size}"
+                            }
+                        }
                         Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
 
                     }
@@ -85,10 +105,16 @@ class PerfilFragment : Fragment() {
         }
     }
 
+    fun setRecyclerView(){
+        adapterReservation= ReservationsAdapter(requireContext(), ArrayList<ReservationResponseItem>())
+        mRecyclerViewMyPost.layoutManager= LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        mRecyclerViewMyPost.adapter=adapterReservation
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil, container, false)
 
@@ -108,12 +134,16 @@ class PerfilFragment : Fragment() {
         // setear datos a los textview
         nameProfile = view.findViewById(R.id.textViewUsername);
         emailProfile = view.findViewById(R.id.textViewEmail);
-
+        mRecyclerViewMyPost= view.findViewById(R.id.recyclerViewMyPosts)
+        hayRespuesta= view.findViewById(R.id.textViewPostExist)
+        nReserva=view.findViewById(R.id.textViewpostNumber)
         val emailText = this.spInstance.getString(Credentials.USER_EMAIL, "email vacio");
         val nameText = this.spInstance.getString(Credentials.USER_FIRSTNAME, "nombre vacio");
 
         nameProfile.setText(nameText);
         emailProfile.setText(emailText);
+
+        setRecyclerView()
     }
 
 

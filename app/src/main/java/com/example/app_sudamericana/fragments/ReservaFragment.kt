@@ -1,5 +1,6 @@
 package com.example.app_sudamericana.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,12 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.RegisterReservation
 import com.example.app_sudamericana.API.Domain.Response.RegisterReservationResponse
+import com.example.app_sudamericana.API.Domain.Response.ReservationResponse
+import com.example.app_sudamericana.API.Domain.Response.TariffResponse
 import com.example.app_sudamericana.API.Domain.Response.UserUpdateResponse
 import com.example.app_sudamericana.API.Service.ReservationService
+import com.example.app_sudamericana.API.Service.TariffService
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.databinding.FragmentReservaBinding
 import com.example.app_sudamericana.enviroments.Credentials
@@ -31,16 +36,18 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class ReservaFragment : Fragment() {
     val disposables: CompositeDisposable = CompositeDisposable()
     var reservation: ReservationService = ReservationService()
-    var dateCreator: DateCreatorFray = DateCreatorFray()
     private lateinit var spInstance: SharedPreferences;
     private var _binding: FragmentReservaBinding? = null
     private val binding get() = _binding!!
     private lateinit var datePicker: MaterialTimePicker
     var dateCurrentPicker: String = "";
     var timeCurrentPicker: String = "";
+    var tariffService = TariffService();
+    lateinit var tariffList: TariffResponse;
+    var idTariffSelected: Int = 0;
 
 
-
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,12 +62,25 @@ class ReservaFragment : Fragment() {
         );
 
         binding.BtnSolicitar.setOnClickListener({ reservation() })
+        binding.selectTarifas.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+            var tariffSelect = tariffList[position];
+            this.idTariffSelected = tariffSelect.idTariff;
+            binding.txtMontoTarifa.setText(
+                "S./ ${
+                    tariffSelect.amount.toString().toDouble()
+                }"
+            );
+
+        })
+        //this.cargarTarifas()
+
         return binding.root
 
 
-
-
     }
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -108,9 +128,7 @@ class ReservaFragment : Fragment() {
         }
 
 
-
     }
-
 
 
     //Funcion Hora
@@ -147,18 +165,14 @@ class ReservaFragment : Fragment() {
     private fun reservation() {
         val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
         val userID = this.spInstance.getString(Credentials.USER_ID, 1.toString());
-        Toast.makeText(
-            context,
-            timeCurrentPicker,
-            Toast.LENGTH_LONG
-        ).show()
+
         if (token != null && userID != null) {
             reservation.seveReservation(
                 token, RegisterReservation(
                     binding.TxtDescripcion.getText().toString(),
                     userID.toString().toInt(),
                     1,
-                    1, "${dateCurrentPicker}T${timeCurrentPicker}"
+                    this.idTariffSelected, "${dateCurrentPicker}T${timeCurrentPicker}"
                 )
             )
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -195,7 +209,6 @@ class ReservaFragment : Fragment() {
     }
 
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -206,8 +219,62 @@ class ReservaFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
 
+
+        fun cargarDataSelect(data: TariffResponse) {
+            val entries: List<String> = data.toList().map { "${it.origin} - ${it.destination}" };
+            //Creación del adapter
+            val adapter = context?.let {
+                ArrayAdapter(
+                    it, // Contexto
+                    R.layout.list_item, //Layout del diseño
+                    entries //Array
+                )
+            }
+            //Agregamos el adapter al autoCompleteTextView
+            with(binding.selectTarifas) {
+                setAdapter(adapter)
+            }
+
+        }
+
+        fun cargarTarifas() {
+            val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
+            if (token != null) {
+                tariffService.getAllTariffs(token).subscribeOn(
+                    Schedulers.io()
+                ).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<TariffResponse> {
+                        override fun onSubscribe(d: Disposable) {
+                            disposables.add(d)
+                        }
+
+                        override fun onNext(t: TariffResponse) {
+                            Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT)
+                                .show()
+                            tariffList = t;
+                            cargarDataSelect(t)
+
+                        }
+
+                        override fun onError(e: Throwable) {
+                            if (e.message.toString().equals(Credentials.HTTP403)) {
+                                Toast.makeText(
+                                    context,
+                                    "BORRAR LA SESSION Y VOLVER A INICIAR",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                            } else {
+                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onComplete() {
+                            disposables.clear()
+                        }
+
+                    })
+            }
+        }
     }
-
-
-
 }

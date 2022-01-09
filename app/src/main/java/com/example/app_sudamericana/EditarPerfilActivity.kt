@@ -47,7 +47,7 @@ class EditarPerfilActivity : AppCompatActivity() {
     }
     //SharedPreferences cerrar sesión
     private fun logOut() {
-        val sp = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        val sp = getSharedPreferences(Credentials.NAME_PREFERENCES, Context.MODE_PRIVATE)
         with(sp.edit()){
             putString("active", "false")
             apply()
