@@ -56,7 +56,7 @@ class ReservationsAdapter(var context: Context, val reservations: ArrayList<Rese
             this.mItem=data
 
             estatus.text = data.stateReservation.description
-            origen.text = "Chofer: ${data.tariff.origin} "
+            origen.text = "Origen: ${data.tariff.origin} "
             destino.text = "Destino: ${data.tariff.destination}"
             costo.text = "S/ ${data.tariff.amount.toDouble().toString()}"
             if(data.driver!=null){
@@ -65,27 +65,27 @@ class ReservationsAdapter(var context: Context, val reservations: ArrayList<Rese
 
             when(data.stateReservation.idStateReservation){
                 Status.PENDIENTE -> {
+                    estatusIcono.setImageResource(R.drawable.pendiente)
 
-                    estatusIcono.setImageResource(R.drawable.ic_waiting)
                 }
                 Status.EN_CAMINO -> {
-
+                    estatusIcono.setImageResource(R.drawable.camino)
                 }
                 Status.EN_ESPERA -> {
 
-                    estatusIcono.setImageResource(R.drawable.ic_waiting)
+                    estatusIcono.setImageResource(R.drawable.espera)
                 }
                 Status.EN_VIAJE -> {
 
-                    estatusIcono.setImageResource(R.drawable.ic_waiting)
+                    estatusIcono.setImageResource(R.drawable.viaje)
                 }
                 Status.VIAJE_REALIZADO -> {
 
-                    estatusIcono.setImageResource(R.drawable.ic_waiting)
+                    estatusIcono.setImageResource(R.drawable.realizado)
                 }
                 Status.CANCELADO -> {
 
-                    estatusIcono.setImageResource(R.drawable.ic_waiting)
+                    estatusIcono.setImageResource(R.drawable.cacelado)
                 }
             }
 
