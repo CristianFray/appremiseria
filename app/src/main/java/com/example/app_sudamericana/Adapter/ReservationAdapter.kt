@@ -59,7 +59,9 @@ class ReservationsAdapter(var context: Context, val reservations: ArrayList<Rese
             origen.text = "Chofer: ${data.tariff.origin} "
             destino.text = "Destino: ${data.tariff.destination}"
             costo.text = "S/ ${data.tariff.amount.toDouble().toString()}"
-            nomchofer.text = "Chofer: ${data.driver.firstName} ${data.driver.lastName}"
+            if(data.driver!=null){
+                nomchofer.text = "Chofer: ${data.driver.firstName} ${data.driver.lastName}"
+            }
 
             when(data.stateReservation.idStateReservation){
                 Status.PENDIENTE -> {

@@ -203,8 +203,7 @@ class MainActivity : AppCompatActivity() {
                 @Override
                 override fun onError(e: Throwable) {
                     Toast.makeText(
-                        this@MainActivity,
-                        "Usuario no existe",
+                        this@MainActivity, e.message,
                         Toast.LENGTH_LONG
                     ).show()
                     //Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()

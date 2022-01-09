@@ -13,7 +13,7 @@ import retrofit2.http.*
 interface IUserRepository {
 
     @Headers("Content-Type: application/json")
-    @PUT(Credentials.URL_USER)
+    @PUT(Credentials.URL_USER + "/updatePassenger")
     fun updateUser(
         @Header("AUTHORIZATION") token: String,
         @Body data: UserUpdateDto
