@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.TextKeyListener.clear
+import android.util.Patterns
 import android.widget.Toast
 import com.example.app_sudamericana.API.Domain.Response.AuthenticateResponse
 import com.example.app_sudamericana.API.Domain.Response.UserRegisterResponse
@@ -36,7 +37,14 @@ class EditarPerfilActivity : AppCompatActivity() {
         binding = ActivityEditarPerfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.BtnActualizar.setOnClickListener({ updateUser()})
+        NombreFocusListener()
+        ApellidoFocusListener()
+        DireccionFocusListener()
+        TelefonoFocusListener()
+        PasswordFocusListener()
+
+        binding.BtnActualizar.setOnClickListener { submitUpdateUser() }
+        // binding.BtnActualizar.setOnClickListener({ updateUser()})
 
 
         this.spInstance = getSharedPreferences(Credentials.NAME_PREFERENCES, Context.MODE_PRIVATE)
@@ -45,6 +53,137 @@ class EditarPerfilActivity : AppCompatActivity() {
 
 
     }
+
+
+    private fun submitUpdateUser() {
+        if (validarNombre() == null && validarApellido() == null && validarDireccion() == null
+            && validarTelefono() == null
+            && validarContreña() == null){
+            updateUser()
+        } else{
+            binding.nombreContainer.helperText = validarNombre()
+            binding.apellidoContainer.helperText = validarApellido()
+            binding.direccionContainer.helperText = validarDireccion()
+            binding.telefonoContainer.helperText = validarTelefono()
+            binding.paswwordContainer.helperText = validarContreña()
+        }
+    }
+
+
+    //validar Nombre
+    private fun NombreFocusListener() {
+        binding.TxtNombre.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.nombreContainer.helperText = validarNombre()
+            }
+        }
+    }
+    private fun validarNombre(): String? {
+        val nombreText = binding.TxtNombre.text.toString()
+        if(nombreText.length<7)
+        {
+            return "Escribe tu nombre completo"
+        }
+        return null
+    }
+
+    //validar Apellido
+    private fun ApellidoFocusListener() {
+        binding.TxtApellido.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.apellidoContainer.helperText = validarApellido()
+            }
+        }
+    }
+    private fun validarApellido(): String? {
+        val apellidoText = binding.TxtApellido.text.toString()
+        if(apellidoText.length<10)
+        {
+            return "Escribe tu Apellido completo"
+        }
+        return null
+    }
+
+
+    //validar Direccion
+    private fun DireccionFocusListener() {
+        binding.TxtDireccion.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.direccionContainer.helperText = validarDireccion()
+            }
+        }
+    }
+    private fun validarDireccion(): String? {
+        val direccionText = binding.TxtDireccion.text.toString()
+        if(direccionText.length<5)
+        {
+            return "Escribe tu Dirección"
+        }
+        return null
+    }
+
+    //validar Telefono
+    private fun TelefonoFocusListener() {
+        binding.TxtTelefono.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.telefonoContainer.helperText = validarTelefono()
+            }
+        }
+    }
+    private fun validarTelefono(): String? {
+        val TelefonoText = binding.TxtTelefono.text.toString()
+        if(!TelefonoText.matches(".*[0-9].*".toRegex()))
+        {
+            return "Debe tener 9 dígitos"
+        }
+        if(TelefonoText.length != 9)
+        {
+            return "Debe tener 9 dígitos"
+        }
+        return null
+    }
+
+    //validar contraseña
+    private fun PasswordFocusListener() {
+        binding.TxtPassword.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.paswwordContainer.helperText = validarContreña()
+            }
+        }
+    }
+    private fun validarContreña(): String? {
+        val passwordText = binding.TxtPassword.text.toString()
+        if(passwordText.length<8)
+        {
+            return "Contraseña mínima de 8 caracteres"
+        }
+        if(!passwordText.matches(".*[A-Z].*".toRegex()))
+        {
+            return "Debe contener 1 carácter en mayúscula"
+        }
+        if(!passwordText.matches(".*[a-z].*".toRegex()))
+        {
+            return "\n" +
+                    "Debe contener 1 carácter en minúscula"
+        }
+        if(!passwordText.matches(".*[@#\$%^&+=].*".toRegex()))
+        {
+            return "Debe contener 1 carácter especial especial (@#\$%^&+=)"
+        }
+        return null
+    }
+
+
+
+
+
+
+
     //SharedPreferences cerrar sesión
     private fun logOut() {
         val sp = getSharedPreferences(Credentials.NAME_PREFERENCES, Context.MODE_PRIVATE)
@@ -88,9 +227,6 @@ private fun cargarDatos(){
                 binding.TxtTelefono.getText().toString(),
                 user,
 
-
-
-
             );
             userService.updateUser(token, userUpdate)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -121,6 +257,7 @@ private fun cargarDatos(){
 
                     override fun onComplete() {
                        disposables.clear()
+
                     }
                 })
 

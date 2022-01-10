@@ -96,7 +96,7 @@ private lateinit var adapterReservation: ReservationsAdapter
                                 nReserva.text="${myResponse.size}"
                             }
                         }
-                        Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
 
                     }
                 })

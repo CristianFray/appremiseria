@@ -2,6 +2,7 @@ package com.example.app_sudamericana.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import com.example.app_sudamericana.API.Domain.Response.TariffResponse
 import com.example.app_sudamericana.API.Domain.Response.UserUpdateResponse
 import com.example.app_sudamericana.API.Service.ReservationService
 import com.example.app_sudamericana.API.Service.TariffService
+import com.example.app_sudamericana.HomeActivity
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.databinding.FragmentReservaBinding
 import com.example.app_sudamericana.enviroments.Credentials
@@ -49,19 +51,25 @@ class ReservaFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
 
     ): View? {
         _binding = FragmentReservaBinding.inflate(inflater, container, false)
+        registroReserva()
+        registroDescripcion()
 
         this.spInstance = requireActivity().getSharedPreferences(
             Credentials.NAME_PREFERENCES,
             Context.MODE_PRIVATE
         );
 
-        binding.BtnSolicitar.setOnClickListener({ reservation() })
+        //binding.BtnSolicitar.setOnClickListener({ reservation() })
+        binding.BtnSolicitar.setOnClickListener { submitRegistroReserva() }
+
+
         binding.selectTarifas.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             var tariffSelect = tariffList[position];
             this.idTariffSelected = tariffSelect.idTariff;
@@ -77,7 +85,58 @@ class ReservaFragment : Fragment() {
         return binding.root
 
 
+
+
     }
+
+    //Validar formulario click boton registrar
+    private fun submitRegistroReserva() {
+        if (validarRegistro() == null && validarDescripcion() == null){
+            reservation()
+        } else{
+            binding.TxtOrigenDestino.helperText = validarRegistro()
+            binding.direccionContainer.helperText = validarDescripcion()
+
+        }
+    }
+
+    //validar ListaOrigenyDestino
+    private fun registroReserva() {
+        binding.selectTarifas.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.TxtOrigenDestino.helperText = validarRegistro()
+            }
+        }
+    }
+    private fun validarRegistro(): String? {
+        val nombreText = binding.selectTarifas.text.toString()
+        if(nombreText.length<7)
+        {
+            return "Selecciona tu origen y destino"
+        }
+        return null
+    }
+
+    //validar Descripcion
+    private fun registroDescripcion() {
+        binding.TxtDescripcion.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.direccionContainer.helperText = validarDescripcion()
+            }
+        }
+    }
+    private fun validarDescripcion(): String? {
+        val nombreText = binding.selectTarifas.text.toString()
+        if(nombreText.length<10)
+        {
+            return "Describe lugar, casa, departamento referencia exacta ."
+        }
+        return null
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -242,7 +301,6 @@ class ReservaFragment : Fragment() {
                         Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT).show()
                         tariffList = t;
                         cargarDataSelect(t)
-
                     }
 
                     override fun onError(e: Throwable) {
@@ -260,6 +318,7 @@ class ReservaFragment : Fragment() {
 
                     override fun onComplete() {
                         disposables.clear()
+
                     }
 
                 })
