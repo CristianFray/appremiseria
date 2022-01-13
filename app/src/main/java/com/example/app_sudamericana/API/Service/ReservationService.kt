@@ -18,12 +18,16 @@ class ReservationService {
         return repository.getAllReservations("Bearer ${token}");
     }
 
-    fun seveReservation(token: String, data: RegisterReservation): Observable<RegisterReservationResponse>{
-        return repository.reservation("Bearer ${token}", data);
+    fun findByIdUser(token: String, idPassenger: Int): Observable<ReservationResponse> {
+        return repository.findByIdUser("Bearer ${token}", idPassenger);
     }
 
-
-
+    fun seveReservation(
+        token: String,
+        data: RegisterReservation
+    ): Observable<RegisterReservationResponse> {
+        return repository.reservation("Bearer ${token}", data);
+    }
 
 
     init {
