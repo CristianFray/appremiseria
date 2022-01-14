@@ -163,10 +163,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewMyPosts"
-                tools:listitem="@layout/cardview_my_post"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                android:layout_height="575dp"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                tools:listitem="@layout/cardview_my_post" />
 
         </LinearLayout>
 

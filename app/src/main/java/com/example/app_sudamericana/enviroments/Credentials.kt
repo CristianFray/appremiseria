@@ -6,14 +6,14 @@ object Credentials {
     const val URI_NEWS = "news" //hrlprincipal
     const val URI_SERVICES = "services"
     const val URI_INFO = "info"
-    const val URL_AUTH = "api/auth"
-    const val URL_RESERVATION = "api/reservation"
-    const val URL_USER = "api/user"
-    const val URL_TARIFF = "api/tariff"
-    const val NAME_PREFERENCES = "my_prefs"
+    const val URL_AUTH = "api/auth" //login
+    const val URL_RESERVATION = "api/reservation" //reservas
+    const val URL_USER = "api/user" //usuario
+    const val URL_TARIFF = "api/tariff" //tarifas
+    const val NAME_PREFERENCES = "my_prefs" //Guardar Datos en sharedPreferences "Memoria"
 
 
-    const val TOKEN_JWT = "token_jwt";
+    const val TOKEN_JWT = "token_jwt"; //token
     const val USER_ID = "user_id";
     const val USER_USERNAME = "user_username";
     const val USER_FIRSTNAME = "user_firstName";

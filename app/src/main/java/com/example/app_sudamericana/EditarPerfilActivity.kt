@@ -226,7 +226,6 @@ private fun cargarDatos(){
                 binding.TxtPassword.getText().toString(),
                 binding.TxtTelefono.getText().toString(),
                 user,
-
             );
             userService.updateUser(token, userUpdate)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
