@@ -18,23 +18,23 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".EditarPerfilActivity"
+            android:name=".ui.activitys.EditarPerfilActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".RegistroActivity"
+            android:name=".ui.activitys.RegistroActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activitys.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.activitys.HomeActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".PrincipalActivity"
+            android:name=".ui.activitys.PrincipalActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
