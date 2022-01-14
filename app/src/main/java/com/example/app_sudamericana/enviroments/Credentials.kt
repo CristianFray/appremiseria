@@ -14,7 +14,7 @@ object Credentials {
 
 
     const val TOKEN_JWT = "token_jwt"; //token
-    const val USER_ID = "user_id";
+    const val USER_ID = "user_id"; //
     const val USER_USERNAME = "user_username";
     const val USER_FIRSTNAME = "user_firstName";
     const val USER_LASTNAME = "user_lastName";

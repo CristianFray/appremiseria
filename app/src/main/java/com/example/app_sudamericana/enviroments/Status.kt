@@ -6,5 +6,5 @@ object Status {
     const val EN_ESPERA = 13
     const val EN_VIAJE = 14
     const val VIAJE_REALIZADO = 15
-    const val CANCELADO = 16
+    const val CANCELADO =16
 }
