@@ -17,11 +17,18 @@ interface IReservationRepository {
     @GET(Credentials.URL_RESERVATION + "/all")
     fun getAllReservations(@Header("AUTHORIZATION") token: String): Observable<ReservationResponse>
 
+    @Headers("Content-Type: application/json")
+    @GET(Credentials.URL_RESERVATION + "/findByIdPassenger/{idPassenger}")
+    fun findByIdUser(
+        @Header("AUTHORIZATION") token: String,
+        @Path("idPassenger") idPassenger: Int
+    ): Observable<ReservationResponse>
 
     @Headers("Content-Type: application/json")
     @POST(Credentials.URL_RESERVATION)
     fun reservation(
-        @Header ( "AUTHORIZATION")token: String,
-        @Body userData: RegisterReservation):
+        @Header("AUTHORIZATION") token: String,
+        @Body userData: RegisterReservation
+    ):
             Observable<RegisterReservationResponse>
 }

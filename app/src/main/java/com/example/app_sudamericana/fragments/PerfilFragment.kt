@@ -38,7 +38,7 @@ class PerfilFragment : Fragment() {
     private lateinit var hayRespuesta: TextView
 
     private lateinit var nReserva: TextView
-private lateinit var adapterReservation: ReservationsAdapter
+    private lateinit var adapterReservation: ReservationsAdapter
 
 
     var reservationService: ReservationService = ReservationService();
@@ -56,10 +56,10 @@ private lateinit var adapterReservation: ReservationsAdapter
         super.onCreate(savedInstanceState)
 
 
-
         val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
-        if (token != null) {
-            reservationService.getAllReservations(token).subscribeOn(
+        val userId = this.spInstance.getString(Credentials.USER_ID, "");
+        if (token != null && userId != null) {
+            reservationService.findByIdUser(token, userId.toString().toInt()).subscribeOn(
                 Schedulers.io()
             ).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ReservationResponse> {
@@ -89,14 +89,14 @@ private lateinit var adapterReservation: ReservationsAdapter
 
                     override fun onNext(t: ReservationResponse?) {
 
-                        t?.let { myResponse->
-                            adapterReservation?.let {mAdapter ->
-                                hayRespuesta.visibility=View.GONE
+                        t?.let { myResponse ->
+                            adapterReservation?.let { mAdapter ->
+                                hayRespuesta.visibility = View.GONE
                                 mAdapter.setItems(myResponse)
-                                nReserva.text="${myResponse.size}"
+                                nReserva.text = "${myResponse.size}"
                             }
                         }
-                       // Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
+                        // Toast.makeText(context, "hay respuesta", Toast.LENGTH_SHORT).show()
 
                     }
                 })
@@ -105,11 +105,14 @@ private lateinit var adapterReservation: ReservationsAdapter
         }
     }
 
-    fun setRecyclerView(){
-        adapterReservation= ReservationsAdapter(requireContext(), ArrayList<ReservationResponseItem>())
-        mRecyclerViewMyPost.layoutManager= LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        mRecyclerViewMyPost.adapter=adapterReservation
+    fun setRecyclerView() {
+        adapterReservation =
+            ReservationsAdapter(requireContext(), ArrayList<ReservationResponseItem>())
+        mRecyclerViewMyPost.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        mRecyclerViewMyPost.adapter = adapterReservation
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -134,9 +137,9 @@ private lateinit var adapterReservation: ReservationsAdapter
         // setear datos a los textview
         nameProfile = view.findViewById(R.id.textViewUsername);
         emailProfile = view.findViewById(R.id.textViewEmail);
-        mRecyclerViewMyPost= view.findViewById(R.id.recyclerViewMyPosts)
-        hayRespuesta= view.findViewById(R.id.textViewPostExist)
-        nReserva=view.findViewById(R.id.textViewpostNumber)
+        mRecyclerViewMyPost = view.findViewById(R.id.recyclerViewMyPosts)
+        hayRespuesta = view.findViewById(R.id.textViewPostExist)
+        nReserva = view.findViewById(R.id.textViewpostNumber)
         val emailText = this.spInstance.getString(Credentials.USER_EMAIL, "email vacio");
         val nameText = this.spInstance.getString(Credentials.USER_FIRSTNAME, "nombre vacio");
 
@@ -145,7 +148,6 @@ private lateinit var adapterReservation: ReservationsAdapter
 
         setRecyclerView()
     }
-
 
 
 }
