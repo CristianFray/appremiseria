@@ -2,6 +2,7 @@ package com.example.app_sudamericana.ui.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,8 @@ import com.example.app_sudamericana.api.service.ReservationService
 import com.example.app_sudamericana.api.service.TariffService
 import com.example.app_sudamericana.R
 import com.example.app_sudamericana.databinding.FragmentReservaBinding
+import com.example.app_sudamericana.ui.activitys.HomeActivity
+import com.example.app_sudamericana.ui.activitys.MainActivity
 import com.example.app_sudamericana.utils.enviroments.Credentials
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -238,6 +241,7 @@ class ReservaFragment : Fragment() {
                             "Registrado Correctamente",
                             Toast.LENGTH_LONG
                         ).show()
+                        startActivity(Intent(context, HomeActivity::class.java))
                     }
 
                     override fun onError(e: Throwable) {
