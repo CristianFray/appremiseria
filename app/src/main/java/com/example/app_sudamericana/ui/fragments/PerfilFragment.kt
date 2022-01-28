@@ -78,7 +78,7 @@ class PerfilFragment : Fragment() {
                             ).show()
 
                         } else {
-                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                           // Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }
                     }
 

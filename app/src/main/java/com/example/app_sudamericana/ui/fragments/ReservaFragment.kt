@@ -30,6 +30,8 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import www.sanju.motiontoast.MotionToast
+import kotlin.coroutines.coroutineContext
 
 
 class ReservaFragment : Fragment() {
@@ -95,7 +97,15 @@ class ReservaFragment : Fragment() {
         } else{
             binding.TxtOrigenDestino.helperText = validarRegistro()
             binding.direccionContainer.helperText = validarDescripcion()
-
+            MotionToast.createColorToast(
+                this@ReservaFragment.requireActivity(),
+                "Operación Fallida",
+                "Complete los campos vacios",
+                MotionToast.TOAST_WARNING,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
         }
     }
 
@@ -240,11 +250,16 @@ class ReservaFragment : Fragment() {
                     }
 
                     override fun onNext(t: RegisterReservationResponse) {
-                        Toast.makeText(
-                            context,
+                       // Toast.makeText(context, "Registrado Correctamente", Toast.LENGTH_LONG).show()
+                        MotionToast.createColorToast(
+                            this@ReservaFragment.requireActivity(),
+                            "Operación Exitosa",
                             "Registrado Correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
+                            MotionToast.TOAST_SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION ,
+                            null
+                        )
                         startActivity(Intent(context, HomeActivity::class.java))
                     }
 
@@ -294,7 +309,17 @@ class ReservaFragment : Fragment() {
                     }
 
                     override fun onNext(t: TariffResponse) {
-                        Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, "Se cargaron las tarifas", Toast.LENGTH_SHORT).show()
+                        MotionToast.createColorToast(
+                            this@ReservaFragment.requireActivity(),
+                            "Operación Exitosa",
+                            "Se cargaron las tarifas",
+                            MotionToast.TOAST_INFO,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION ,
+                            null
+                        )
+
                         tariffList = t;
                         cargarDataSelect(t)
                     }
@@ -308,6 +333,7 @@ class ReservaFragment : Fragment() {
                             ).show()
 
                         } else {
+                            disposables.clear()
                            // Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }
                     }

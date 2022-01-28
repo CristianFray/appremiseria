@@ -16,6 +16,7 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import www.sanju.motiontoast.MotionToast
 
 class EditarPerfilActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditarPerfilBinding
@@ -225,13 +226,19 @@ private fun cargarDatos(){
 
 
                     override fun onNext(t: UserUpdateResponse) {
-                        Toast.makeText(
+                        MotionToast.createColorToast(
                             this@EditarPerfilActivity,
-                            "Actualizado Correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
+                            "Operación Exitosa",
+                            "Usuario Registrado correctamente",
+                            MotionToast.TOAST_SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION ,
+                            null
+                        )
+
                         this@EditarPerfilActivity.finish()
                         logOut()
+
                     }
 
                     override fun onSubscribe(d: Disposable) {

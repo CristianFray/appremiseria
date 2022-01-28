@@ -20,6 +20,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_registro.*
+import www.sanju.motiontoast.MotionToast
 
 class RegistroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroBinding
@@ -81,6 +82,15 @@ class RegistroActivity : AppCompatActivity() {
            binding.telefonoContainer.helperText = validarTelefono()
            binding.usuarioContainer.helperText = validarUsuario()
            binding.paswwordContainer.helperText = validarContreña()
+           MotionToast.createColorToast(
+               this@RegistroActivity,
+               "Operación Fallida",
+               "Complete los campos vacios",
+               MotionToast.TOAST_WARNING,
+               MotionToast.GRAVITY_BOTTOM,
+               MotionToast.LONG_DURATION,
+               null
+           )
        }
     }
 
@@ -255,22 +265,29 @@ class RegistroActivity : AppCompatActivity() {
 
                 @Override
                 override fun onNext(news: UserRegisterResponse) {
-                Toast.makeText(
+                    MotionToast.createColorToast(
                         this@RegistroActivity,
+                        "Operación Exitosa",
                         "Usuario Registrado correctamente",
-                        Toast.LENGTH_LONG
-                    ).show()
+                        MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION ,
+                        null
+                    )
                     this@RegistroActivity.finish()
                 }
 
                 @Override
                 override fun onError(e: Throwable) {
-                    //Toast.makeText(this@RegistroActivity, e.message, Toast.LENGTH_SHORT).show()
-                    Toast.makeText(
+                    MotionToast.createColorToast(
                         this@RegistroActivity,
+                        "Operación Fallida",
                         "No se pudo registrar el usuario",
-                        Toast.LENGTH_LONG
-                    ).show()
+                        MotionToast.TOAST_ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
                 }
 
                 @Override

@@ -20,6 +20,7 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import www.sanju.motiontoast.MotionToast
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -125,6 +126,15 @@ class MainActivity : AppCompatActivity() {
         } else { //mensaje error de datos
             binding.usuarioContainer.helperText = validarUsuario()
             binding.passwordContainer.helperText = validarContraseña()
+            MotionToast.createColorToast(
+                this@MainActivity,
+                "Operación Fallida",
+                "Complete los campos vacios",
+                MotionToast.TOAST_WARNING,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
         }
 
     }
@@ -200,10 +210,15 @@ class MainActivity : AppCompatActivity() {
 
                 @Override
                 override fun onError(e: Throwable) {
-                    Toast.makeText(
-                        this@MainActivity, e.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    MotionToast.createColorToast(
+                        this@MainActivity,
+                        "Operación Fallida",
+                        "Usuario o Contraseña incorrecta",
+                        MotionToast.TOAST_ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
                     //Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
 
