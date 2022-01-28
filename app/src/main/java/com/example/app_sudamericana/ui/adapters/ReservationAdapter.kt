@@ -42,11 +42,13 @@ class ReservationsAdapter(var context: Context, val reservations: ArrayList<Rese
         private lateinit var mItem : ReservationResponseItem
         //TODO instanciar elementos
         val estatus: TextView = itemView.findViewById(R.id.estatus)
+        val description: TextView = itemView.findViewById(R.id.Descripcion)
         val estatusIcono: ImageView = itemView.findViewById(R.id.status_img)
         val origen: TextView = itemView.findViewById(R.id.origen)
         val destino: TextView = itemView.findViewById(R.id.destino)
         val nomchofer: TextView = itemView.findViewById(R.id.pasajeroName)
         val costo: TextView = itemView.findViewById(R.id.costo)
+
 
 
         fun bind(data: ReservationResponseItem, context: Context) {
@@ -57,8 +59,10 @@ class ReservationsAdapter(var context: Context, val reservations: ArrayList<Rese
             origen.text = "Origen: ${data.tariff.origin} "
             destino.text = "Destino: ${data.tariff.destination}"
             costo.text = "S/ ${data.tariff.amount.toDouble().toString()}"
+            description.text = "Descripción: ${data.description}"
+
             if(data.driver!=null){
-                nomchofer.text = "Chofer: ${data.driver.firstName} ${data.driver.lastName}"
+                nomchofer.text = "${data.driver.firstName} ${data.driver.lastName}"
             }
 
             when(data.stateReservation.idStateReservation){

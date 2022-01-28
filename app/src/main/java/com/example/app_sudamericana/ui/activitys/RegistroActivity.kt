@@ -97,7 +97,7 @@ class RegistroActivity : AppCompatActivity() {
     }
     private fun validarNombre(): String? {
         val nombreText = binding.TxtNombre.text.toString()
-        if(nombreText.length<7)
+        if(nombreText.length<3)
         {
             return "Escribe tu nombre completo"
         }

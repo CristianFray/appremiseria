@@ -101,7 +101,7 @@ class PerfilFragment : Fragment() {
                     }
                 })
         } else {
-            Toast.makeText(context, "token vacio", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(context, "token vacio", Toast.LENGTH_SHORT).show()
         }
     }
 

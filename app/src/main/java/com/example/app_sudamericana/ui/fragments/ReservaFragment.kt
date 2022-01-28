@@ -34,8 +34,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ReservaFragment : Fragment() {
     val disposables: CompositeDisposable = CompositeDisposable()
+
     var reservation: ReservationService = ReservationService()
     private lateinit var spInstance: SharedPreferences;
+
     private var _binding: FragmentReservaBinding? = null
     private val binding get() = _binding!!
     private lateinit var datePicker: MaterialTimePicker
@@ -63,7 +65,7 @@ class ReservaFragment : Fragment() {
             Context.MODE_PRIVATE
         );
 
-        //binding.BtnSolicitar.setOnClickListener({ reservation() })
+        //Boton solicitar reserva
         binding.BtnSolicitar.setOnClickListener { submitRegistroReserva() }
 
 
@@ -86,7 +88,7 @@ class ReservaFragment : Fragment() {
 
     }
 
-    //Validar formulario click boton registrar
+    //Valida los campos y reservas
     private fun submitRegistroReserva() {
         if (validarRegistro() == null && validarDescripcion() == null){
             reservation()
@@ -108,7 +110,7 @@ class ReservaFragment : Fragment() {
     }
     private fun validarRegistro(): String? {
         val nombreText = binding.selectTarifas.text.toString()
-        if(nombreText.length<7)
+        if(nombreText.length<3)
         {
             return "Selecciona tu origen y destino"
         }
@@ -201,7 +203,7 @@ class ReservaFragment : Fragment() {
                     "${mDatePicker.hour}:${mDatePicker.minute}:00"
             }
             mDatePicker.addOnNegativeButtonClickListener {
-                Log.wtf("timePicker2", mDatePicker.hour.toString())
+               // Log.wtf("timePicker2", mDatePicker.hour.toString())
 
             }
             mDatePicker.addOnCancelListener {
@@ -215,6 +217,8 @@ class ReservaFragment : Fragment() {
     }
 
 
+
+    //Crear reservas
     private fun reservation() {
         val token = this.spInstance.getString(Credentials.TOKEN_JWT, "");
         val userID = this.spInstance.getString(Credentials.USER_ID, 1.toString());
@@ -245,18 +249,12 @@ class ReservaFragment : Fragment() {
                     }
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(
-                            context,
-                            e.message,
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText( context,e.message,Toast.LENGTH_LONG).show()
                     }
 
                     override fun onComplete() {
                         disposables.clear()
                     }
-
-
                 })
         }
 
@@ -310,7 +308,7 @@ class ReservaFragment : Fragment() {
                             ).show()
 
                         } else {
-                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                           // Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }
                     }
 

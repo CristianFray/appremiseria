@@ -11,7 +11,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="345dp"
         android:background="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -26,7 +26,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="190dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/azulfondo"
                     android:transitionName="@string/transtionname_picture"
@@ -45,7 +45,7 @@
                     android:id="@+id/circleImageProfile"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
-                    android:layout_marginTop="130dp"
+                    android:layout_marginTop="125dp"
                     android:src="@drawable/ico_usuariowhite"
                     app:civ_border_color="@color/white"
                     app:civ_border_width="5dp"
@@ -72,8 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mis Reservas
-"
+                        android:text="Mis Reservas"
                         android:textColor="@color/white"
                         android:textSize="13dp"
                         android:textStyle="bold" />
@@ -86,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginTop="290dp"
+                    android:layout_marginTop="270dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -141,7 +140,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="1dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -154,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:text="No hay Reservas"
