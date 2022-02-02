@@ -17,14 +17,6 @@ class RetrofitInstance  private constructor() {
         return api.create(IRepository)
     }
 
-    fun <T> execute(call: Call<T>): Response<T>? {
-        return try {
-            call.execute()
-        } catch (err: IOException) {
-            err.printStackTrace()
-            null
-        }
-    }
 
     companion object {
         var instance: RetrofitInstance? = null

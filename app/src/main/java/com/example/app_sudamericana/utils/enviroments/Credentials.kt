@@ -2,8 +2,8 @@ package com.example.app_sudamericana.utils.enviroments
 
 object Credentials {
     //    browser-sync start --proxy "http://localhost:8080/" --files "css/*.css"
-    //const val URL_API = "https://remiseria-spring-boot-heroku.herokuapp.com/" //88
-    const val URL_API = "http://192.168.1.28:3000/" // local
+    const val URL_API = "https://spring-boot-remiseria-mvc.herokuapp.com/" //
+    //const val URL_API = "http://192.168.1.28:3000/" // local
     const val URI_NEWS = "news" //hrlprincipal
     const val URI_SERVICES = "services"
     const val URI_INFO = "info"
@@ -24,7 +24,6 @@ object Credentials {
     const val SESSION = "active";
     const val USER_PASSWORD ="user_password"
     const val USER_TELEFONO ="user_telefono"
-
     const val HTTP403 ="HTTP 403 Forbidden"
 
 }

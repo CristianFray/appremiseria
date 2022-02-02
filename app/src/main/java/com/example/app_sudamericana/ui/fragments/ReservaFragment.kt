@@ -96,7 +96,7 @@ class ReservaFragment : Fragment() {
             reservation()
         } else{
             binding.TxtOrigenDestino.helperText = validarRegistro()
-            binding.direccionContainer.helperText = validarDescripcion()
+            //binding.direccionContainer.helperText = validarDescripcion()
             MotionToast.createColorToast(
                 this@ReservaFragment.requireActivity(),
                 "Operación Fallida",
@@ -140,7 +140,7 @@ class ReservaFragment : Fragment() {
         val nombreText = binding.selectTarifas.text.toString()
         if(nombreText.length<10)
         {
-            return "Describe lugar, casa, departamento referencia exacta ."
+            return "Dirección de recojo"
         }
         return null
     }
